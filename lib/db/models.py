@@ -26,3 +26,26 @@ class Instrument (Base):
 
     id = Column(Integer(), primary_key= True)
     name = Column(String())
+
+class Band (Base):
+    __tablename__ = 'bands'
+
+    id = Column(Integer(), primary_key=True)
+    name = Column(String())
+    formation_date = Column(String())
+    location = Column(String())
+    website = Column(String())
+    genre_id = Column(Integer(), ForeignKey('genres.id'))
+
+class Genre (Base):
+    __tablename__ = 'genres'
+
+    id = Column(Integer(), primary_key=True)
+    name = Column(String())
+
+class BandMusician (Base):
+    __tablename__ = 'band_musicians'
+
+    id = Column(Integer(), primary_key=True)
+    musician_id = Column(Integer(), ForeignKey('musicians.id'))
+    band_id = Column(Integer(), ForeignKey('bands.id'))
