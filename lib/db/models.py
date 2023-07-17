@@ -43,6 +43,9 @@ class Genre (Base):
     id = Column(Integer(), primary_key=True)
     name = Column(String())
 
+    def __repr__(self):
+        return f'Genre: {self.name}, id: {self.id}'
+
 class BandMusician (Base):
     __tablename__ = 'band_musicians'
 
