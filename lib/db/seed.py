@@ -91,11 +91,6 @@ if __name__ == '__main__':
     # session.add_all(bm_list)
     # session.commit()
 
-
-
-
-    # my_n = random.choice([True, False])
-    # by_n = random.choice([True, False])
-
-    # m_tryout = m_list[mid-1]
-    # b_tryout = b_list[bid-1]
+    #if b_list[bid].instrument_id == m_list[mid].insturment_id:
+        #run Audition requested_by = xxx, is_accepted = choice[true,false]
+        #else get new rand bid or mid
