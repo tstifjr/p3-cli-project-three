@@ -24,12 +24,12 @@ if __name__ == '__main__':
     # session.add_all(i_list)
     # session.commit()
 
-    # print('seeding musicians')
+    print('seeding musicians')
     # session.query(Musician).delete()
     # session.commit()
     # m_list = []
     # for i in range(1, 16):
-    #     if i <= 10:
+    #     if i <= 12:
     #         looking = True
     #     else:
     #         looking = False
@@ -72,6 +72,16 @@ if __name__ == '__main__':
     print('seeding audition relations')
     session.query(Audition).delete()
     session.commit()
+
+    a1 = Audition(musician_id = 6, band_id = 6, requested_by = "band")
+    a2 = Audition (musician_id = 11, band_id = 6,requested_by = 'musician')
+    a3 = Audition (musician_id= 13, band_id = 10, requested_by = 'musician', is_accepted = True)
+    a4 = Audition (band_id = 1, musician_id = 2, requested_by =  'band', is_accepted = False)
+    a5 = Audition (band_id = 8, musician_id =3, requested_by = 'band' )
+
+    session.add_all([a1, a2, a3, a4, a5])
+    session.commit()
+
     # bm_list = []
     # for i in range(1, 16):
     #     bid = random.randint(1,7)
@@ -80,3 +90,12 @@ if __name__ == '__main__':
     #     bm_list.append(instance)
     # session.add_all(bm_list)
     # session.commit()
+
+
+
+
+    # my_n = random.choice([True, False])
+    # by_n = random.choice([True, False])
+
+    # m_tryout = m_list[mid-1]
+    # b_tryout = b_list[bid-1]
