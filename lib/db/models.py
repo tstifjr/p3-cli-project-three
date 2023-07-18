@@ -20,6 +20,8 @@ class Musician (Base):
     skill_level = Column(Integer())
     location = Column(String())
     instrument_id = Column(Integer(), ForeignKey('instruments.id'))
+    genre_id = Column(Integer(), ForeignKey('genres.id'))
+    is_looking = Column(Boolean())
 
 class Instrument (Base):
     __tablename__ = 'instruments'
@@ -36,6 +38,8 @@ class Band (Base):
     location = Column(String())
     website = Column(String())
     genre_id = Column(Integer(), ForeignKey('genres.id'))
+    instrument_id = Column(Integer(), ForeignKey('instruments.id'))
+    is_looking = Column(Boolean())
 
 class Genre (Base):
     __tablename__ = 'genres'
@@ -46,9 +50,11 @@ class Genre (Base):
     def __repr__(self):
         return f'Genre: {self.name}, id: {self.id}'
 
-class BandMusician (Base):
-    __tablename__ = 'band_musicians'
+class Audition (Base):
+    __tablename__ = 'auditions'
 
     id = Column(Integer(), primary_key=True)
     musician_id = Column(Integer(), ForeignKey('musicians.id'))
     band_id = Column(Integer(), ForeignKey('bands.id'))
+    musician_accepts = Column(Boolean())
+    band_accepts = Column(Boolean())
