@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import String, Integer, Column, Boolean, ForeignKey, MetaData
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, backref
+from sqlalchemy.ext.associationproxy import association_proxy
 
 engine = create_engine( 'sqlite:///project_three.db' )
 Session = sessionmaker( bind = engine )
@@ -30,9 +31,10 @@ class Musician (Base):
     is_looking = Column(Boolean())
 
     auditions = relationship('Audition', back_populates='musician')
+    bands = association_proxy('auditions', 'band')
 
     def __repr__(self):
-        return f'< Musician: {self.name}, instruement: {self.instrument.name} >'
+        return f'< Musician: {self.name}, instrument: {self.instrument.name} >'
    
 
 class Instrument (Base):
@@ -42,9 +44,10 @@ class Instrument (Base):
     name = Column(String())
 
     musicians = relationship('Musician', backref = 'instrument')
+    bands = relationship("Band", backref = 'instrument')
 
     def __repr__(self):
-        return f'< Insturment: {self.name} >'
+        return f'< Instrument: {self.name} >'
     
 class Band (Base):
     __tablename__ = 'bands'
@@ -58,8 +61,12 @@ class Band (Base):
     instrument_id = Column(Integer(), ForeignKey('instruments.id'))
     is_looking = Column(Boolean())
 
-    # def __repr__(self):
-    #     return f'< Band: {self.name}, genre: {self.genre.name} >'
+    auditions = relationship("Audition", back_populates = "band")
+    musicians = association_proxy('auditions', 'musician')
+    
+
+    def __repr__(self):
+        return f'< Band: {self.name}, genre: {self.genre.name} >'
     
 class Genre (Base):
     __tablename__ = 'genres'
@@ -68,6 +75,8 @@ class Genre (Base):
     name = Column(String())
 
     musicians = relationship('Musician', backref = 'genre')
+    bands = relationship("Band", backref = 'genre')
+    
     
     def __repr__(self):
         return f'< Genre: {self.name} >'
@@ -82,6 +91,7 @@ class Audition (Base):
     is_accepted = Column(Boolean())
 
     musician = relationship('Musician', back_populates='auditions')
+    band = relationship("Band", back_populates="auditions")
 
-    # def __repr__(self):
-    #     return f'< Musician {self.musician.name} auditioned for {self.band.name} >'
+    def __repr__(self):
+        return f'< Musician {self.musician.name} auditioned for {self.band.name} >'

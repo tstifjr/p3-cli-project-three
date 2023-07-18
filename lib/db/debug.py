@@ -1,7 +1,9 @@
 # from models import session, Band, engine, Base, Genre
 from models import *
 
-b1 = Band()
+musicians = session.query(Musician).all()
+bands = session.query(Band).all()
+auditions = session.query(Audition).all()
 
 
 
