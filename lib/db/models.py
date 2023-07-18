@@ -56,5 +56,5 @@ class Audition (Base):
     id = Column(Integer(), primary_key=True)
     musician_id = Column(Integer(), ForeignKey('musicians.id'))
     band_id = Column(Integer(), ForeignKey('bands.id'))
-    musician_accepts = Column(Boolean())
-    band_accepts = Column(Boolean())
+    requested_by = Column(String())
+    is_accepted = Column(Boolean())
