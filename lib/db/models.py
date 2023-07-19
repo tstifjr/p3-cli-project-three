@@ -47,6 +47,11 @@ class Musician (Base):
             return musician_list
         else:
             return musician_list[0]
+        
+    @classmethod
+    def save_musician(cls, musician):
+        session.add(musician)
+        session.commit()
 
 class Instrument (Base):
     __tablename__ = 'instruments'

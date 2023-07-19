@@ -16,6 +16,58 @@ def check_musician_name(musician):
     else:
         print('invalid response')
         return None
+    
+def create_new_musician():
+    print("Would you like to create a new account?")
+    account = input("[y/n]: ")
+    if (account == "y" or account == "yes"):
+        print("Let's get you set up!")
+        first_name = input("First Name: ").rstrip().capitalize()
+        last_name = input("Last Name: ").rstrip().capitalize()
+        full_name = f"{first_name} {last_name}"
+        age = int(input("Age: "))
+        email = input("Email: ").rstrip()
+        skill = input("Skill Level 1(beginner) - 5(expert): ")
+        location = input("Location: ").rstrip()
+        instrument_list = session.query(Instrument).all()
+        print("What is your primary instrument?\n")
+        for instr in instrument_list:
+            print(f"{instr.id}. {instr.name}")
+        while True:
+            instrument_id = int(input("Please enter a number: "))
+            if 0 < instrument_id <= len(instrument_list):
+                break
+            else:
+                print(f"Number must be between 1 and {str(len(instrument_list))}")
+        print("What genre do you like to play the most?")
+        genre_list = session.query(Genre).all()
+        for genre in genre_list:
+            print(f"{genre.id}. {genre.name}")
+        while True:
+            genre_id = int(input("Please enter a number: "))
+            if 0 < genre_id <= len(genre_list):
+                break
+            else:
+                print(f"Number must be between 1 and {str(len(genre_list))}")
+        print("Are you currently looking to join a band?")
+        looking = input("[y/n]: ")
+        if (looking == "y" or looking =="yes"):
+            looking = 1
+        else:
+            looking = 0
+        new_user = Musician(
+            name = full_name,
+            age = age,
+            email = email,
+            skill_level = skill,
+            location = location,
+            instrument_id = instrument_id,
+            genre_id = genre_id,
+            is_looking = looking
+        )
+        Musician.save_musician(new_user)
+        return new_user
+
 
 def musician_menu():
     musician = None
@@ -35,10 +87,10 @@ def musician_menu():
             musician = Musician.find_musician_by_name(name)
 
             if not musician:
-                #add new user function goes here
-                pass
+                musician = create_new_musician()
+                
             
-            if musician:
+            if isinstance(musician, Musician):
                 musician = check_musician_name(musician)
 
         #menu options to choose from
