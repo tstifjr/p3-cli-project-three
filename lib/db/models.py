@@ -44,7 +44,7 @@ class Musician (Base):
             return None
         elif len(musician_list) > 1:
             print("More than one record found. Please provide a full name.")
-            return None
+            return musician_list
         else:
             return musician_list[0]
 
