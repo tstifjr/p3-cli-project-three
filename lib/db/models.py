@@ -36,7 +36,17 @@ class Musician (Base):
     def __repr__(self):
         return f'< Musician: {self.name}, instrument: {self.instrument.name} >'
    
-
+    @classmethod
+    def find_musician_by_name(cls, name):
+        musician_list = session.query(cls).filter(cls.name.like(f'%{name}%')).all()
+        if len(musician_list) == 0:
+            print("No records found")
+            return None
+        elif len(musician_list) > 1:
+            print("More than one record found. Please provide a full name.")
+            return None
+        else:
+            return musician_list[0]
 
 class Instrument (Base):
     __tablename__ = 'instruments'
