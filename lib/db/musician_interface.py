@@ -53,7 +53,6 @@ def create_new_musician():
         Musician.save_musician(new_user)
         return new_user
 
-
 def musician_menu():
     musician = None
     m_menu_dic = {'1' : band_search_menu, #dict to hold functions for each menu option
@@ -99,49 +98,3 @@ def musician_menu():
         resp_2 = input('y/n: ')
         if resp_2 == 'n':
             exit_program()
-
-def genre_search():
-    genres = session.query(Genre).all()
-    looper = ''
-    while looper != "n":
-        print("Pick a Genre:\n")
-        genre_selected = choose_a_genre()
-        print("")
-        results = genres[int(genre_selected) - 1].bands
-        for result in results:
-            print(f"{result.name}")
-        print("")
-        looper = input("Search for a different genre? [y/n]: ")
-
-def name_search():
-    print('is a name search')
-
-def instrument_search():
-    print('is instrument search')
-
-def actively_looking():
-    print('these bands are looking for members')
-
-def band_search_menu(musician):
-    search_menu_dict = {
-        '1' : actively_looking,
-        '2' : name_search,
-        '3' : genre_search,
-        '4' : instrument_search
-    }
-    while True:
-        print('Please select your method of band search.')
-        print('''
-            1. Actively looking for new members.\n
-            2. By name\n
-            3. By genre\n
-            4. By instrument\n
-            5. By location       
-            ''')
-        menu_selections = input('Please choose a number or type exit to exit: ')
-        if menu_selections == "quit":
-            break
-        elif search_menu_dict.get(menu_selections):
-            search_menu_dict[menu_selections]()
-        else:
-            print('invalid input')

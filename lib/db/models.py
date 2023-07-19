@@ -35,7 +35,17 @@ class Musician (Base):
 
     def __repr__(self):
         return f'< Musician: {self.name}, instrument: {self.instrument.name} >'
-   
+    
+    @property
+    def show_info(self):
+        print("YOUR PROFILE \n::::::::::::::::::::::")
+        print(f':: Name: {self.name}\n' +
+          f':: Instrument: {self.instrument.name}\n' +
+          f':: Genre: {self.genre.name}\n' +
+          f':: skill lvl: {self.skill_level}\n' +
+          #   f':: {musician.location}\n' +
+          f':: email: {self.email}\n::::::::::::::::::::::')
+        
     @classmethod
     def find_musician_by_name(cls, name):
         musician_list = session.query(cls).filter(cls.name.like(f'%{name}%')).all()
@@ -53,8 +63,8 @@ class Musician (Base):
         session.add(musician)
         session.commit()
     
-    def request_audition(self, band_id):
-        a = Audition(musician_id = self.id, band_id = band_id, requested_by = 'Musician')
+    def request_audition(self, band):
+        a = Audition(musician_id = self.id, band_id = band.id, requested_by = 'Musician')
         session.add(a)
         session.commit()
         print("your auditon request has been made !!!")
