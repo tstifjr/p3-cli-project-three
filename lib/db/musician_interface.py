@@ -1,6 +1,7 @@
 from models import *
 import sys
 from cli import exit_program
+from dummy import *
 
 def fake_func (arg1):
     print("this is an empty function")
@@ -20,9 +21,9 @@ def check_musician_name(musician):
 def musician_menu():
     musician = None
     m_menu_dic = {'1' : band_search_menu, #dict to hold functions for each menu option
-                '2' : fake_func,
-                '3' : fake_func,
-                '4' : fake_func}
+                '2' : make_audition_request,
+                '3' : manage_profile,
+                '4' : information_lookup}
     
     while True: #initate and stay in Musician Menu
         if not musician: #intro statements
@@ -37,8 +38,8 @@ def musician_menu():
             if not musician:
                 #add new user function goes here
                 pass
-            
-            if musician:
+
+            if isinstance(musician, Musician):
                 musician = check_musician_name(musician)
 
         #menu options to choose from
