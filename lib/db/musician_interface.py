@@ -28,11 +28,16 @@ def musician_menu():
         if not musician: #intro statements
             print("Welcome to the musician's hub!")
             print("Let's see if you're in our database! What is your name?")
-        while not musician: #select a musician to be
+        while not isinstance(musician, Musician): #select a musician to be
             name = input("Enter name: ")
             if name == "exit":
                 exit_program()
             musician = Musician.find_musician_by_name(name)
+
+            if not musician:
+                #add new user function goes here
+                pass
+            
             if musician:
                 musician = check_musician_name(musician)
 
