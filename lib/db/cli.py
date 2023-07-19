@@ -1,4 +1,7 @@
 from models import *
+from functions import *
+
+
 
 if __name__ == '__main__':
     print(
@@ -26,8 +29,29 @@ if __name__ == '__main__':
                 else:
                     musician = musician_list[0]
                     break
-            print(f"Welcome, {musician.name}")
+            print(f"Welcome, {musician.name}!")
+            while True:
+                print("""
+                    Please select one of the options bewlow: \n
+                    1. Search for a band\n
+                    2. Request audtion\n
+                    3. View or alter your profile\n
+                    4. General stats and information\n 
+                    """)
+                m_menu_select = input("Please enter a number for your choice: ")
+                if m_menu_select == '1':
+                    band_search_menu(musician)
+                    break
+                if m_menu_select == '2':
+                    break
+                if m_menu_select == '3':
+                    break
+                if m_menu_select == '4':
+                    break
+                else:
+                    print("Please select a number between 1 and 4")
             break
+        
 
     def band_menu():
         while True:
