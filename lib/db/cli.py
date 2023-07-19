@@ -1,15 +1,13 @@
 from models import *
 from musician_interface import *
+from band_interface import *
 import sys
 
 def exit_program():
     print("Exiting the Program")
     sys.exit(0)
 
-def band_menu():
-    while True:
-        print("Welcome to the band hub!")
-        break
+
 
 if __name__ == '__main__':
     print(

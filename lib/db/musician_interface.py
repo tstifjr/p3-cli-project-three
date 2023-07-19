@@ -3,8 +3,6 @@ import sys
 from cli import exit_program
 from dummy import *
 
-def fake_func (arg1):
-    print("this is an empty function")
 
 def check_musician_name(musician):
     print(f'Is this you? : {musician.name}')

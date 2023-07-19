@@ -84,6 +84,18 @@ class Band (Base):
     def __repr__(self):
         return f'< Band: {self.name}, genre: {self.genre.name} >'
     
+    @classmethod
+    def find_band_by_name(cls, name):
+        band_list = session.query(cls).filter(cls.name.like(f'%{name}%')).all()
+        if len(band_list) == 0:
+            print("No records found")
+            return None
+        elif len(band_list) > 1:
+            print("More than one record found. Please provide the full band name.")
+            return band_list
+        else:
+            return band_list[0]
+    
 class Genre (Base):
     __tablename__ = 'genres'
 
