@@ -3,7 +3,6 @@ import sys
 from cli import exit_program
 from dummy import *
 
-
 def check_musician_name(musician):
     print(f'Is this you? : {musician.name}')
     resp = input('y/n: ')
@@ -15,7 +14,7 @@ def check_musician_name(musician):
     else:
         print('invalid response')
         return None
-    
+
 def create_new_musician():
     print("Would you like to create a new account?")
     account = input("[y/n]: ")
@@ -28,26 +27,13 @@ def create_new_musician():
         email = input("Email: ").rstrip()
         skill = input("Skill Level 1(beginner) - 5(expert): ")
         location = input("Location: ").rstrip()
-        instrument_list = session.query(Instrument).all()
+
         print("What is your primary instrument?\n")
-        for instr in instrument_list:
-            print(f"{instr.id}. {instr.name}")
-        while True:
-            instrument_id = int(input("Please enter a number: "))
-            if 0 < instrument_id <= len(instrument_list):
-                break
-            else:
-                print(f"Number must be between 1 and {str(len(instrument_list))}")
+        instrument_id = choose_an_instrument()
+
         print("What genre do you like to play the most?")
-        genre_list = session.query(Genre).all()
-        for genre in genre_list:
-            print(f"{genre.id}. {genre.name}")
-        while True:
-            genre_id = int(input("Please enter a number: "))
-            if 0 < genre_id <= len(genre_list):
-                break
-            else:
-                print(f"Number must be between 1 and {str(len(genre_list))}")
+        genre_id = choose_a_genre()
+
         print("Are you currently looking to join a band?")
         looking = input("[y/n]: ")
         if (looking == "y" or looking =="yes"):
@@ -117,20 +103,32 @@ def musician_menu():
 def genre_search():
     genres = session.query(Genre).all()
     looper = ''
-    while looper != "no":
+    while looper != "n":
         print("Pick a Genre:\n")
-        for genre in genres:
-            print(f"{genre.id}. {genre.name}")
-        genre_selected = input("Enter a number: ")
+        genre_selected = choose_a_genre()
         print("")
         results = genres[int(genre_selected) - 1].bands
         for result in results:
             print(f"{result.name}")
         print("")
-        looper = input("Search for a different genre? [yes or no]: ")
+        looper = input("Search for a different genre? [y/n]: ")
 
+def name_search():
+    print('is a name search')
+
+def instrument_search():
+    print('is instrument search')
+
+def actively_looking():
+    print('these bands are looking for members')
 
 def band_search_menu(musician):
+    search_menu_dict = {
+        '1' : actively_looking,
+        '2' : name_search,
+        '3' : genre_search,
+        '4' : instrument_search
+    }
     while True:
         print('Please select your method of band search.')
         print('''
@@ -140,16 +138,10 @@ def band_search_menu(musician):
             4. By instrument\n
             5. By location       
             ''')
-        menu_selections = input('Please choose a number or type quit to exit: ')
+        menu_selections = input('Please choose a number or type exit to exit: ')
         if menu_selections == "quit":
             break
-        elif menu_selections == "1":
-            pass
-        elif menu_selections == "2":
-            print("Search for a band by name")
-        elif menu_selections == "3":
-            genre_search()
-        elif menu_selections == "4":
-            pass
-        elif menu_selections == "5":
-            pass
+        elif search_menu_dict.get(menu_selections):
+            search_menu_dict[menu_selections]()
+        else:
+            print('invalid input')

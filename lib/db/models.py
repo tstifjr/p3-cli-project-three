@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy import String, Integer, Column, Boolean, ForeignKey, MetaData
+from sqlalchemy import String, Integer, Column, Boolean, ForeignKey, MetaData, desc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, backref
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -52,6 +52,30 @@ class Musician (Base):
     def save_musician(cls, musician):
         session.add(musician)
         session.commit()
+    
+    def request_audition(self, band_id):
+        a = Audition(musician_id = self.id, band_id = band_id, requested_by = 'Musician')
+        session.add(a)
+        session.commit()
+        print("your auditon request has been made !!!")
+
+    @classmethod
+    def most_skilled_list(cls):
+        output = session.query(Musician.name, Musician.skill_level).order_by(desc(Musician.skill_level)).limit(5).all()
+        return output
+    
+    def update_instrument(self, i_id):
+        self.instrument_id = i_id
+        query_self = session.query(Musician).filter(self.id == Musician.id).first()
+        query_self.instrument_id = i_id
+        session.commit()
+
+    def update_genre(self, g_id):
+        self.genre_id = g_id
+        query_self = session.query(Musician).filter(self.id == Musician.id).first()
+        query_self.genre_id = g_id
+        session.commit()
+        
 
 class Instrument (Base):
     __tablename__ = 'instruments'
@@ -64,6 +88,12 @@ class Instrument (Base):
 
     def __repr__(self):
         return f'< Instrument: {self.name} >'
+    
+    @classmethod
+    def get_all(cls):
+        list_all = session.query(cls).all()
+        return list_all
+
     
 class Band (Base):
     __tablename__ = 'bands'
@@ -85,6 +115,7 @@ class Band (Base):
         return f'< Band: {self.name}, genre: {self.genre.name} >'
     
     @classmethod
+
     def find_band_by_name(cls, name):
         band_list = session.query(cls).filter(cls.name.like(f'%{name}%')).all()
         if len(band_list) == 0:
@@ -95,6 +126,19 @@ class Band (Base):
             return band_list
         else:
             return band_list[0]
+
+    def get_most_popular_genre (cls):
+        my_list = session.query(Genre).join(cls).filter(Genre.id == cls.genre_id).all()
+        is_sorted = sorted(my_list, key = lambda el : len(el.bands), reverse = True)
+        return is_sorted[0]
+    
+    @classmethod
+    def get_most_popular_instrument (cls):
+        my_list = session.query(Instrument).join(cls).filter(Instrument.id == cls.instrument_id).all()
+        is_sorted = sorted(my_list, key = lambda el : len(el.bands), reverse = True)
+        return is_sorted[0]
+
+
     
 class Genre (Base):
     __tablename__ = 'genres'
@@ -108,6 +152,11 @@ class Genre (Base):
     
     def __repr__(self):
         return f'< Genre: {self.name} >'
+    
+    @classmethod
+    def get_all(cls):
+        list_all = session.query(cls).all()
+        return list_all
 
 class Audition (Base):
     __tablename__ = 'auditions'
