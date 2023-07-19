@@ -1,6 +1,6 @@
 from models import *
 import sys
-from cli import exit_program
+# from cli import exit_program
 
 #############manage_profile functions#######################
 def manage_profile(musician):
