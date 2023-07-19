@@ -39,6 +39,32 @@ def view_profile(musician):
         else:
             print("sorry, You have no auditions")        
 
+#global function
+def choose_an_instrument ():
+    instrument_list = Instrument.get_all()
+    for instr in instrument_list:
+        print(f"{instr.id}. {instr.name}")
+    while True:
+        instrument_id = int(input("Please enter a number: "))
+        if 0 < instrument_id <= len(instrument_list):
+            break
+        else:
+            print(f"Number must be between 1 and {str(len(instrument_list))}")
+    return instrument_id
+
+#global function
+def choose_a_genre ():
+    genre_list = Genre.get_all()
+    for genre in genre_list:
+        print(f"{genre.id}. {genre.name}")
+    while True:
+        genre_id = int(input("Please enter a number: "))
+        if 0 < genre_id <= len(genre_list):
+            break
+        else:
+            print(f"Number must be between 1 and {str(len(genre_list))}")
+    return genre_id
+
 def change_profile(musician):
     print("Alter Menu:: enter 1. to change your instrument or 2. to change your genre \n")
     change_options = {'1' : change_instrument,
@@ -54,15 +80,20 @@ def change_profile(musician):
         else:
             print('please select a valid number or type exit to quit')
 
-def change_instrument(musician):
-    print(f'Your instrument is {musician.instrument.name}')
-    #add function to update table and change musician attribute
-    print('Your instrument has been changed')
+#can be used for either musician or band object
+def change_instrument(m_b_object):
+    print(f'Your instrument is {m_b_object.instrument.name}')
+    print(f'select another insturment from the list ')
+    instrument_id = choose_an_instrument()
+    m_b_object.update_instrument(instrument_id)
+    print(f'Your instrument has been changed to {m_b_object.instrument}')
 
-def change_genre(musician):
-    print(f'Your genre is {musician.genre.name}')
-    #add function to update table and change musician attribute
-    print('Your genre has been changed')
+#can be used for either musician or band object
+def change_genre(m_b_object):
+    print(f'Your genre is {m_b_object.genre.name}')
+    genre_id = choose_a_genre()
+    m_b_object.update_genre(genre_id)
+    print(f'Your instrument has been changed to {m_b_object.genre}')
 
 ####################################################
 
@@ -87,22 +118,22 @@ def make_audition_request(musician):
         band_is_valid = validates_band_name(band_input)
     band_id = band_is_valid.id
     print(band_id, musician.id)
+    musician.request_audition(band_id)
     #can make this a instance method of musician
-    a = Audition(musician_id = musician.id, band_id = band_id, requested_by = 'Musician')
-    session.add(a)
-    session.commit()
-    print("your auditon request has been made !!!")
+
 
 ####################################################
 
 
 def information_lookup(arg1):
     print('The most popular genre for bands is...')
-    
+    print(f'{Band.get_most_popular_genre()} \n')
     # most popular genre for bands
     
     print('The most requested instrument by bands is...')
+    print(f'{Band.get_most_popular_instrument()} \n')
     # most requested instrument by bands
 
     print('The top 5 most skilled musicians are...')
+    print(f'{Musician.most_skilled_list()} \n')
     # top 5 most skilled musicians
