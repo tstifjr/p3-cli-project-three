@@ -115,6 +115,18 @@ class Band (Base):
         return f'< Band: {self.name}, genre: {self.genre.name} >'
     
     @classmethod
+
+    def find_band_by_name(cls, name):
+        band_list = session.query(cls).filter(cls.name.like(f'%{name}%')).all()
+        if len(band_list) == 0:
+            print("No records found")
+            return None
+        elif len(band_list) > 1:
+            print("More than one record found. Please provide the full band name.")
+            return band_list
+        else:
+            return band_list[0]
+
     def get_most_popular_genre (cls):
         my_list = session.query(Genre).join(cls).filter(Genre.id == cls.genre_id).all()
         is_sorted = sorted(my_list, key = lambda el : len(el.bands), reverse = True)
@@ -125,6 +137,7 @@ class Band (Base):
         my_list = session.query(Instrument).join(cls).filter(Instrument.id == cls.instrument_id).all()
         is_sorted = sorted(my_list, key = lambda el : len(el.bands), reverse = True)
         return is_sorted[0]
+
 
     
 class Genre (Base):
