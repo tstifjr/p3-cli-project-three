@@ -1,6 +1,7 @@
 from models import *
 from musician_interface import *
 from band_interface import band_menu
+from stats_menu import stats_menu
 
 
 
@@ -20,11 +21,13 @@ if __name__ == '__main__':
     print('Are you a musician or a band?')
     x=''
     while not (x == 'm' or x == 'b'):   
-        x = input('Press m for musician or press b for band: ')
+        x = input('Press [m] for musician, [b] for band, or [g] for general stats: ')
         if x == 'm':
             musician_menu()
         elif x == 'b':
             band_menu()
+        elif x =="g":
+            stats_menu()
         else:
             print('Not a valid response!')
 

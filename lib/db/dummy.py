@@ -121,11 +121,15 @@ def validates_band_name (band_name):
     
 def make_audition_request(musician):
     print('Please provide the name of the band you want to audition for')
-    band_is_valid = None
-    while not band_is_valid:
-        band_input = input('band name is:  ')
-        band_is_valid = validates_band_name(band_input)
-    musician.request_audition(band_is_valid)
+    band = None
+    while not isinstance(band, Band):
+        band_input = input("Band's name is:  ")
+        band = Band.find_band_by_name(band_input)
+    print(f"Send audition request to {band.name}?\n")
+    band.show_info
+    response = input("[y/n]: ")
+    if (response == "y" or response == "yes"):
+        musician.request_audition(band)
 
 #############3. manage_profile menu#######################
 
