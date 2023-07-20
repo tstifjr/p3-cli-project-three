@@ -5,7 +5,7 @@ from global_helpers import choose_a_genre, choose_an_instrument, req_aud_from_li
 
 #           SEARCH FOR MUSICIANS
 
-######################################
+########################################
 
 def musician_search_menu(band):
     search_menu_dict = {
@@ -139,4 +139,21 @@ def instrument_search(band):
         looper = input("Search by a different instrument? [y/n]: ")
 
 
+#######################################
 
+#           REQUEST AUDITION
+
+########################################
+
+def make_audition_request(band):
+    print('Please provide the name of the musician you want to audition')
+    musician = None
+    while not isinstance(musician, Musician):
+        musician_input = input("Musician's name is:  ")
+        musician = Musician.find_musician_by_name(musician_input)
+    print(f"Send audition request to {musician.name}?\n")
+    musician.show_info
+    response = input("[y/n]: ")
+    if (response == "y" or response == "yes"):
+        band.request_audition(musician)
+    

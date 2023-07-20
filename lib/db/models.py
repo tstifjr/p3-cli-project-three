@@ -64,7 +64,7 @@ class Musician (Base):
         session.commit()
     
     def request_audition(self, band):
-        a = Audition(musician_id = self.id, band_id = band.id, requested_by = 'Musician')
+        a = Audition(musician_id = self.id, band_id = band.id, requested_by = 'musician')
         session.add(a)
         session.commit()
         print("your auditon request has been made !!!")
@@ -73,6 +73,18 @@ class Musician (Base):
     def most_skilled_list(cls):
         output = session.query(Musician.name, Musician.skill_level).order_by(desc(Musician.skill_level)).limit(5).all()
         return output
+    
+    @classmethod
+    def get_most_popular_instrument (cls):
+        my_list = session.query(Instrument).join(cls).filter(Instrument.id == cls.instrument_id).all()
+        is_sorted = sorted(my_list, key = lambda el : len(el.musicians), reverse = True)
+        return is_sorted[0].name
+    
+    @classmethod
+    def get_most_popular_genre (cls):
+        my_list = session.query(Genre).join(cls).filter(Genre.id == cls.genre_id).all()
+        is_sorted = sorted(my_list, key = lambda el : len(el.musicians), reverse = True)
+        return is_sorted[0].name
     
     def update_instrument(self, i_id):
         self.instrument_id = i_id
@@ -147,24 +159,45 @@ class Band (Base):
             return band_list[0]
 
     @classmethod
+    def save_band(cls, band):
+        session.add(band)
+        session.commit()
+
+    @classmethod
     def get_most_popular_genre (cls):
         my_list = session.query(Genre).join(cls).filter(Genre.id == cls.genre_id).all()
         is_sorted = sorted(my_list, key = lambda el : len(el.bands), reverse = True)
-        return is_sorted[0]
+        return is_sorted[0].name
     
     @classmethod
     def get_most_popular_instrument (cls):
         my_list = session.query(Instrument).join(cls).filter(Instrument.id == cls.instrument_id).all()
         is_sorted = sorted(my_list, key = lambda el : len(el.bands), reverse = True)
-        return is_sorted[0]
+        return is_sorted[0].name
     
     @classmethod
     def bands_looking (cls):
         query_a = session.query(Band).filter(Band.is_looking == True)
         return query_a.all()
+    
+    @property
+    def show_info(self):
+        print(f"")
+        print(f"""
+:::::::::::: {self.name} :::::::::::::::::::
+:::
+::: Website:            {self.website}
+::: Established:        {self.formation_date}
+::: Preferred Genre:    {self.genre.name}
+::: Instrument Needed:  {self.instrument.name}
+::: Currently Looking:  {self.is_looking}
+::: Location:           {self.location}
+:::
+:::::::::::::::::::::::::::::::::::::::::::::::::::
+""")
 
     def request_audition(self, musician):
-        a = Audition(musician_id = musician.id, band_id = self.id, requested_by = 'Band')
+        a = Audition(musician_id = musician.id, band_id = self.id, requested_by = 'band')
         session.add(a)
         session.commit()
         print("your auditon request has been made !!!")
