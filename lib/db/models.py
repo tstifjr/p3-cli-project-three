@@ -163,6 +163,21 @@ class Band (Base):
         query_a = session.query(Band).filter(Band.is_looking == True)
         return query_a.all()
 
+    def request_audition(self, musician):
+        a = Audition(musician_id = musician.id, band_id = self.id, requested_by = 'Band')
+        session.add(a)
+        session.commit()
+        print("your auditon request has been made !!!")
+
+    def musicians_look_same_instr(self):
+        query_a = session.query(Musician).filter(Musician.is_looking == True)
+        query_b = session.query(Musician).filter(Musician.instrument_id == self.instrument_id)
+        return query_a.intersect(query_b).all()
+    
+    def musicians_look_same_genre(self):
+        query_a = session.query(Musician).filter(Musician.is_looking == True)
+        query_c = session.query(Musician).filter(Musician.genre_id == self.genre_id)
+        return query_a.intersect(query_c).all()
     
 class Genre (Base):
     __tablename__ = 'genres'
