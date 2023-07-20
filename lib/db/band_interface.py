@@ -1,10 +1,7 @@
 from models import *
 from dummy_band import musician_search_menu, make_audition_request
-from global_helpers import exit_program
+from global_helpers import *
 from band_create_new import create_new_band
-
-def fake_fun(band):
-    print("Placeholder")
 
 def check_band_name(band):
     print(f'Is this your band? : {band.name}')
@@ -23,7 +20,7 @@ def band_menu():
     b_menu_dict = {
         "1": musician_search_menu,
         "2": make_audition_request,
-        "3": fake_fun
+        "3": manage_profile
     }
 
     while True: #initate and stay in Musician Menu
