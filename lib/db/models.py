@@ -38,7 +38,7 @@ class Musician (Base):
     
     @property
     def show_info(self):
-        print("YOUR PROFILE \n::::::::::::::::::::::")
+        print("::::::::::::::::::::::")
         print(f':: Name: {self.name}\n' +
           f':: Instrument: {self.instrument.name}\n' +
           f':: Genre: {self.genre.name}\n' +
@@ -64,7 +64,7 @@ class Musician (Base):
         session.commit()
     
     def request_audition(self, band):
-        a = Audition(musician_id = self.id, band_id = band.id, requested_by = 'Musician')
+        a = Audition(musician_id = self.id, band_id = band.id, requested_by = 'musician')
         session.add(a)
         session.commit()
         print("your auditon request has been made !!!")
@@ -95,8 +95,31 @@ class Musician (Base):
         query_a = session.query(Band).filter(Band.is_looking == True)
         query_c = session.query(Band).filter(Band.genre_id == self.genre_id)
         return query_a.intersect(query_c).all()
-        
+    
+    @property
+    def pending_requests(self):
+        query = session.query(Band.name, Audition).join(Audition).filter(Audition.is_accepted == None, Audition.requested_by == 'band')
+        return query.all()
 
+    @property
+    def sent_requests_status(self):
+        query  = session.query(Band.name, Audition.is_accepted).join(Audition).filter(Audition.requested_by  == 'musician')
+        return query.all()
+
+    @property
+    def upcoming_auditions(self):
+        query = session.query(Band.name).join(Audition).filter(Audition.is_accepted == True)
+        return query.all()
+    
+    @property
+    def rejected_requests(self):
+        query = session.query(Audition).filter(Audition.is_accepted == False)
+        return query.all()
+    
+    # def delete_rejected_requests(self, audition_list):
+    #     session.delete(audition_list)
+    #     session.commit()
+    
 class Instrument (Base):
     __tablename__ = 'instruments'
 
@@ -178,6 +201,26 @@ class Band (Base):
         query_a = session.query(Musician).filter(Musician.is_looking == True)
         query_c = session.query(Musician).filter(Musician.genre_id == self.genre_id)
         return query_a.intersect(query_c).all()
+   
+    @property
+    def pending_requests(self):
+        query = session.query(Musician.name, Audition).join(Audition).filter(Audition.is_accepted == None, Audition.requested_by == 'musician')
+        return query.all()
+
+    @property
+    def sent_requests_status(self):
+        query  = session.query(Musician.name, Audition.is_accepted).join(Audition).filter(Audition.requested_by  == 'band')
+        return query.all()
+
+    @property
+    def upcoming_auditions(self):
+        query = session.query(Musician.name).join(Audition).filter(Audition.is_accepted == True)
+        return query.all()
+
+    @property
+    def rejected_requests(self):
+        query = session.query(Audition).filter(Audition.is_accepted == False)
+        return query.all()
     
 class Genre (Base):
     __tablename__ = 'genres'
@@ -211,3 +254,7 @@ class Audition (Base):
 
     def __repr__(self):
         return f'< Musician {self.musician.name} auditioned for {self.band.name} >'
+    
+    def update_accepted(self, status):
+        self.is_accepted = status
+        session.commit()

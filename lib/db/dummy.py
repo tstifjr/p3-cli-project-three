@@ -111,6 +111,7 @@ def new_search(arg1, arg2):
 
 ############ 2. audition request menu#################
 
+####change to band version
 def validates_band_name (band_name):
     band_obj = session.query(Band).filter(Band.name == band_name).first()
     if band_obj:
@@ -129,68 +130,147 @@ def make_audition_request(musician):
 
 #############3. manage_profile menu#######################
 
-def manage_profile(musician):
-    print("Profile Menu:: press 1. to view your profile or 2. to change your profile \n")
-    
+def manage_profile(data_object):    
     profile_options = {
         '1' : view_profile,
         '2' : change_profile,
+        '3' : pending_aud_request,
+        '4' : pending_audition,
+        '5' : audition_cleanup
     }
     select_input = ''
+
     while select_input != 'exit':
-        select_input = input('Profile Menu:: enter number: ')
-        if profile_options.get(select_input):
-            profile_options[select_input](musician)
-            print('Profile Menu:: select another number or type exit to quit')
-        elif select_input == 'exit':
-            continue
-        else:
-            print('please select a valid number or type exit to quit')
-
-def view_profile(musician):
-    u_input = None
-    while u_input != 'exit':
-        print('press a to see all your auditions, i to see your info, exit to exit')
-        u_input = input('enter:  ')
-        if u_input == 'i':
-            musician.show_info
-        elif u_input == 'a':
-            my_auditions = musician.auditions
-            if len(my_auditions) > 0:
-                print(f'Your auditions are: \n {my_auditions}')
+        print("Profile Menu:: \n" +
+              "  1. to view your profile \n" +
+              "  2. to change your profile \n" +
+              "  3. see pending requests \n" +
+              "  4. see upcoming auditions \n" +
+              "  5. remove completed auditions \n")
+        while True:
+            select_input = input('Profile Menu:: enter number: ')
+            if profile_options.get(select_input):
+                profile_options[select_input](data_object)
+                select_input = input("Profile Menu:: enter to continue or exit to quit")
+                break
+            elif select_input == 'exit':
+                break
             else:
-                print("sorry, You have no auditions")
-        elif u_input == 'exit':
-            continue
-        else:
-            print('not a valid input')        
+                print('please select a valid number or type exit to quit')
 
-def change_profile(musician):
-    print("Alter Menu:: enter 1. to change your instrument, 2. to change your genre, or exit to exit\n")
+def view_profile(data_object):
+    print('!!!!YOUR PROFILE!!!!')
+    data_object.show_info
+
+def change_profile(data_object):
     change_options = {'1' : change_instrument,
                       '2' : change_genre}
     select_input = ''
     while select_input != 'exit':
+        print("Alter Menu:: enter 1. to change your instrument, 2. to change your genre, or exit to exit\n")
         select_input = input('Alter Menu:: enter number: ')
         if change_options.get(select_input):
-           change_options[select_input](musician)
-           print('Alter Menu:: select another number or type exit to quit')
+           change_options[select_input](data_object)
+           select_input = input("Profile Menu:: enter to continue or exit to quit")
         elif select_input == 'exit':
             continue
         else:
             print('please select a valid number or type exit to quit')
 
-############4. information lookup menu#################
+def pending_aud_request(data_object):
+    sent_requests_status = data_object.sent_requests_status
+    incoming_requests = data_object.pending_requests
 
-def information_lookup(arg1):
-    print('The most popular genre for bands is...')
-    print(f'{Band.get_most_popular_genre()} \n')
-    # most popular genre for bands
+    print('Status of sent requests is:')
+    print(sent_requests_status)
+    u_input = input('press enter to continue:: ')
+    print('Incoming requests requests are:')
+    print(incoming_requests)
+    print('Press 1 to manage incoming requests')
+    u_input = input(':: ')
+    if u_input == '1':
+        for request in incoming_requests:
+            req_audition = request[1]
+            print(request[1])
+            print(f'Accept request from {request[0]}?')
+            u_input = input('[y/n] or enter to pass: ')
+            if u_input == 'y':
+                req_audition.update_accepted(status = True)
+                print(f'{request[0]} has been accepted')
+            elif u_input == 'n':
+                req_audition.update_accepted(status = False)
+                print(f'{request[0]} has been declined')
+            else:
+                print(f'passed: {request[0]} still pending')
+        print('All requests taken care of.')
+
+
+def pending_audition(musician):
+    my_auditions = musician.upcoming_auditions
+    print('Your upcoming auditions are:')
+    print(my_auditions)
+
+def audition_cleanup(musician):
+    rejected_requests = musician.rejected_requests
+    print('press 1 to delete all rejected requests, 2 to delete all rejected requests, and all to delete all auditions')
+    resp = input(':: ')
+    if resp == '1':
+        if len(rejected_requests) > 0 :
+            print('Are you sure you want to delete?')
+            print(rejected_requests)
+            resp = input('y to delete: ')
+            if resp == 'y':
+                musician.delete_auditions_all(rejected_requests)
+        else:
+            print('Sorry, looks like there are no requests')
+
+    elif resp == '2':
+        print('bye rejections :-(')
+    elif resp == 'all':
+        print ('bye to all')
+    else:
+        print('invalid response')
+
+
+    # u_input = None
+    # while u_input != 'exit':
+    #     print('press a to see all your auditions, i to see your info, exit to exit')
+    #     u_input = input('enter:  ')
+    #     if u_input == 'i': #op1
+    #         
+    #     elif u_input == 'a': #op2
+    #         my_auditions = musician.auditions
+    #         if len(my_auditions) > 0:
+    #             print(f'Your auditions are: \n {my_auditions}')
+    #         else:
+    #             print("sorry, You have no auditions")
+    #     elif u_input == 'exit':
+    #         continue
+    #     else:
+    #         print('not a valid input')       
+            #functionality to show:
+            # which auditions you(either,band or musician) haven't accepted (is pending?)
+            # method: that' shows musician all auditions request but not accepted
+            # method: changes accepted into true
+            # method: that shows all accepted auditions
+            # method: choose to delete from the accepted auditions list
+
+            # accept requests from the bands
+            # choose to remove accepted audition 
+
+
+
+# ############4. information lookup menu#################
+
+# def information_lookup(arg1):
+#     print('The most popular genre for bands is...')
+#     print(f'{Band.get_most_popular_genre()} \n')
+#     # most popular genre for bands
     
-    print('The most requested instrument by bands is...')
-    print(f'{Band.get_most_popular_instrument()} \n')
-    # most requested instrument by bands
+#     print('The most requested instrument by bands is...')
+#     print(f'{Band.get_most_popular_instrument()} \n')
+#     # most requested instrument by bands
 
-    print('The top 5 most skilled musicians are...')
-    print(f'{Musician.most_skilled_list()} \n')
-    # top 5 most skilled musicians
+#     print('The top 5 most skilled musicians are...')
+#     print(f'{Musician.most_skilled_list()} \n')
+#     # top 5 most skilled musicians

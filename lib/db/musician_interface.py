@@ -57,7 +57,7 @@ def musician_menu():
     m_menu_dic = {'1' : band_search_menu, #dict to hold functions for each menu option
                 '2' : make_audition_request,
                 '3' : manage_profile,
-                '4' : information_lookup}
+                }
     
     while True: #initate and stay in Musician Menu
         if not musician: #intro statements
@@ -82,7 +82,6 @@ def musician_menu():
             1. Search for a band\n
             2. Request audition\n
             3. View or alter your profile\n
-            4. General stats and information\n 
             """)
         
         while True: #loop to select a valid option
@@ -91,7 +90,7 @@ def musician_menu():
                 m_menu_dic[m_menu_select](musician)
                 break
             else: 
-                print("Please select a number between 1 and 4")
+                print("Please select a number between 1 and 3")
 
         print('Would you like to do something else?')
         resp_2 = input('y/n: ')

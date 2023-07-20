@@ -27,14 +27,3 @@ if __name__ == '__main__':
             band_menu()
         else:
             print('Not a valid response!')
-
-        
-        
-
-        
-
-
-    
-            
-
-    
