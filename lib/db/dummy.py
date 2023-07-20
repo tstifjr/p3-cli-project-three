@@ -111,15 +111,6 @@ def new_search(arg1, arg2):
 
 ############ 2. audition request menu#################
 
-####change to band version
-def validates_band_name (band_name):
-    band_obj = session.query(Band).filter(Band.name == band_name).first()
-    if band_obj:
-        return band_obj
-    else:
-        print("Not a valid band name")
-        return None
-    
 def make_audition_request(musician):
     print('Please provide the name of the band you want to audition for')
     band = None
@@ -262,19 +253,3 @@ def audition_cleanup(musician):
             # accept requests from the bands
             # choose to remove accepted audition 
 
-
-
-# ############4. information lookup menu#################
-
-# def information_lookup(arg1):
-#     print('The most popular genre for bands is...')
-#     print(f'{Band.get_most_popular_genre()} \n')
-#     # most popular genre for bands
-    
-#     print('The most requested instrument by bands is...')
-#     print(f'{Band.get_most_popular_instrument()} \n')
-#     # most requested instrument by bands
-
-#     print('The top 5 most skilled musicians are...')
-#     print(f'{Musician.most_skilled_list()} \n')
-#     # top 5 most skilled musicians
