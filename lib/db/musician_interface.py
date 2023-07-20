@@ -1,6 +1,5 @@
 from models import *
-import sys
-from cli import exit_program
+from global_helpers import exit_program
 from dummy import *
 
 def check_musician_name(musician):
@@ -81,7 +80,7 @@ def musician_menu():
         print(""" 
             Please select one of the options bewlow: \n
             1. Search for a band\n
-            2. Request audtion\n
+            2. Request audition\n
             3. View or alter your profile\n
             4. General stats and information\n 
             """)

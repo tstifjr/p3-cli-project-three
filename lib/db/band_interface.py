@@ -1,6 +1,6 @@
 from models import *
-import sys
 from dummy_band import musician_search_menu
+from global_helpers import exit_program
 
 def fake_fun(band):
     print("Placeholder")
@@ -18,7 +18,6 @@ def check_band_name(band):
         return None
 
 def band_menu():
-    from cli import exit_program
     band = None
     b_menu_dict = {
         "1": musician_search_menu,

@@ -1,5 +1,5 @@
 from models import *
-from dummy import choose_a_genre, choose_an_instrument
+from global_helpers import choose_a_genre, choose_an_instrument
 
 #######################################
 
@@ -24,7 +24,7 @@ def name_search():
         name = input("Enter the musicians name: ")
         result = Musician.find_musician_by_name(name)
         if isinstance(result, Musician):
-            print(str(result) + "\n")
+            result.show_info
             print("Would you like to search for a different name? ")
             search_again = input("[y/n]: ")
             if search_again == "n":

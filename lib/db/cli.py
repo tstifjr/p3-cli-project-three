@@ -1,11 +1,7 @@
 from models import *
 from musician_interface import *
 from band_interface import band_menu
-import sys
 
-def exit_program():
-    print("Exiting the Program")
-    sys.exit(0)
 
 
 
