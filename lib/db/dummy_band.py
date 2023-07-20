@@ -5,7 +5,7 @@ from global_helpers import choose_a_genre, choose_an_instrument, req_aud_from_li
 
 #           SEARCH FOR MUSICIANS
 
-######################################
+########################################
 
 def musician_search_menu(band):
     search_menu_dict = {

@@ -74,6 +74,18 @@ class Musician (Base):
         output = session.query(Musician.name, Musician.skill_level).order_by(desc(Musician.skill_level)).limit(5).all()
         return output
     
+    @classmethod
+    def get_most_popular_instrument (cls):
+        my_list = session.query(Instrument).join(cls).filter(Instrument.id == cls.instrument_id).all()
+        is_sorted = sorted(my_list, key = lambda el : len(el.musicians), reverse = True)
+        return is_sorted[0].name
+    
+    @classmethod
+    def get_most_popular_genre (cls):
+        my_list = session.query(Genre).join(cls).filter(Genre.id == cls.genre_id).all()
+        is_sorted = sorted(my_list, key = lambda el : len(el.musicians), reverse = True)
+        return is_sorted[0].name
+    
     def update_instrument(self, i_id):
         self.instrument_id = i_id
         query_self = session.query(Musician).filter(self.id == Musician.id).first()
@@ -155,13 +167,13 @@ class Band (Base):
     def get_most_popular_genre (cls):
         my_list = session.query(Genre).join(cls).filter(Genre.id == cls.genre_id).all()
         is_sorted = sorted(my_list, key = lambda el : len(el.bands), reverse = True)
-        return is_sorted[0]
+        return is_sorted[0].name
     
     @classmethod
     def get_most_popular_instrument (cls):
         my_list = session.query(Instrument).join(cls).filter(Instrument.id == cls.instrument_id).all()
         is_sorted = sorted(my_list, key = lambda el : len(el.bands), reverse = True)
-        return is_sorted[0]
+        return is_sorted[0].name
     
     @classmethod
     def bands_looking (cls):
