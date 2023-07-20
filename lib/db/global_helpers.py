@@ -12,6 +12,7 @@ def choose_an_instrument ():
     instrument_list = Instrument.get_all()
     for instr in instrument_list:
         print(f"{instr.id}. {instr.name}")
+    print("\n")
     while True:
         instrument_id = int(input("Please enter a number: "))
         if 0 < instrument_id <= len(instrument_list):
@@ -24,6 +25,7 @@ def choose_a_genre ():
     genre_list = Genre.get_all()
     for genre in genre_list:
         print(f"{genre.id}. {genre.name}")
+    print("\n")
     while True:
         genre_id = int(input("Please enter a number: "))
         if 0 < genre_id <= len(genre_list):
@@ -98,6 +100,7 @@ def what_is_string(b_m_obj):
 
 #can be used for either musician or band object     
 def req_aud_from_list(b_m_obj, list_b_or_m):
+    print("")
     if len(list_b_or_m) > 0 :
         print('would you like to request auditions?')
         check_input = input('[y/n]: ')
