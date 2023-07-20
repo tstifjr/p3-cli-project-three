@@ -30,14 +30,3 @@ if __name__ == '__main__':
             stats_menu()
         else:
             print('Not a valid response!')
-
-        
-        
-
-        
-
-
-    
-            
-
-    
