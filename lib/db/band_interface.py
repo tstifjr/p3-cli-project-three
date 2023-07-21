@@ -1,5 +1,5 @@
 from models import *
-from dummy_band import musician_search_menu, make_audition_request
+from band_functions import musician_search_menu, make_audition_request
 from global_helpers import *
 from band_create_new import create_new_band
 

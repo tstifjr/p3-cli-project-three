@@ -1,6 +1,6 @@
 from models import *
 from global_helpers import exit_program
-from dummy import *
+from musician_functions import *
 
 def check_musician_name(musician):
     print(f'\nIs this your Name? : {musician.name}')
