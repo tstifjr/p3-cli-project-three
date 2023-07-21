@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy import String, Integer, Column, Boolean, ForeignKey, MetaData, desc
+from sqlalchemy import String, Integer, Column, Boolean, ForeignKey, MetaData, desc, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, backref
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -150,7 +150,12 @@ class Musician (Base):
         query = session.query(Audition).filter(Audition.musician_id == self.id)
         query.delete()
         session.commit()
-    
+
+    @classmethod
+    def get_musician_with_most_auditions(cls):
+        query = session.query(cls, func.count(Audition.id).label('audition_count')).filter(Audition.musician_id == cls.id).group_by(Audition.musician_id).order_by(desc('audition_count'))
+        return query.first()
+
 class Band (Base):
     __tablename__ = 'bands'
 
@@ -282,7 +287,12 @@ class Band (Base):
         query = session.query(Audition).filter(Audition.band_id == self.id)
         query.delete()
         session.commit()
-    
+
+    @classmethod
+    def get_band_with_most_auditions(cls):
+        query = session.query(cls, func.count(Audition.id).label('audition_count')).filter(Audition.band_id == cls.id).group_by(Audition.band_id).order_by(desc('audition_count'))
+        return query.first()
+
 class Instrument (Base):
     __tablename__ = 'instruments'
 
