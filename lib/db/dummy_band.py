@@ -1,5 +1,5 @@
 from models import *
-from global_helpers import choose_a_genre, choose_an_instrument, req_aud_from_list
+from global_helpers import *
 
 #######################################
 
@@ -66,7 +66,7 @@ def func_1(band):
     print(f"Here are musicians that play {band.instrument.name}\n")
     musician_list = band.musicians_look_same_instr()
     for m in musician_list:
-        print(f"{m.name} {m.genre}")
+        print(f"{m.name} | Genre: {m.genre.name}")
     print("\n")
     req_aud_from_list(band, musician_list)  
 
@@ -80,14 +80,13 @@ def func_2(band):
 def func_3(band):
     looking_list = session.query(Musician).filter(Musician.is_looking == True).all()
     looking_list.sort(key = lambda musician : musician.genre.name) 
-    for musician in looking_list:
-        print(f"{musician.name} | {musician.instrument.name} | {musician.genre}")
+    for m in looking_list:
+        print(f"{m.name} | {m.instrument.name} | Genre: {m.genre.name}")
     req_aud_from_list(band, looking_list)
     # input("\nPress any enter to continue: ")
 
 
 ################           NAME SEARCH               ############
-
 
 def name_search(band):
     while True:
@@ -101,43 +100,6 @@ def name_search(band):
             search_again = input("[y/n]: ")
             if search_again == "n":
                 break
-
-
-################           GENRE SEARCH               ############
-
-
-def genre_search(band):
-    genres = session.query(Genre).all()
-    looper = ''
-    while looper != "n":
-        print("\nPick a Genre:\n")
-        genre_selected = choose_a_genre()
-        print("")
-        results = genres[int(genre_selected) - 1].musicians
-        for result in results:
-            print(f"{result.name}: {result.instrument}")
-        req_aud_from_list(band, results)
-        print("")
-        looper = input("Search for a different genre? [y/n]: ")
-
-
-################           INSTRUMENT SEARCH               ############
-
-
-def instrument_search(band):
-    instruments = session.query(Instrument).all()
-    looper = ''
-    while looper != "n":
-        print("\nPick a Instrument:\n")
-        instr_selected = choose_an_instrument()
-        print("")
-        results = instruments[int(instr_selected) - 1].musicians
-        for result in results:
-            print(f"{result.name} | skill level: {result.skill_level} | Prefers: {result.genre.name}")
-        print("")
-        req_aud_from_list(band, results)
-        looper = input("Search by a different instrument? [y/n]: ")
-
 
 #######################################
 

@@ -114,3 +114,134 @@ def req_aud_from_list(b_m_obj, list_b_or_m):
                     print('no request made')
         else :
             print('no request(s) made')
+
+#############3. manage_profile menu#######################
+
+def manage_profile(data_object):    
+    profile_options = {
+        '1' : view_profile,
+        '2' : change_profile,
+        '3' : pending_aud_request,
+        '4' : pending_audition,
+        '5' : audition_cleanup
+    }
+    select_input = ''
+
+    while select_input != 'exit':
+        print("Profile Menu:: \n" +
+              "  1. to view your profile \n" +
+              "  2. to change your profile \n" +
+              "  3. see pending requests \n" +
+              "  4. see upcoming auditions \n" +
+              "  5. remove completed auditions \n")
+        while True:
+            select_input = input('Profile Menu:: enter number: ')
+            if profile_options.get(select_input):
+                profile_options[select_input](data_object)
+                select_input = input("Profile Menu:: enter to continue or exit to quit")
+                break
+            elif select_input == 'exit':
+                break
+            else:
+                print('please select a valid number or type exit to quit')
+
+def view_profile(data_object):
+    print('!!!!YOUR PROFILE!!!!')
+    data_object.show_info
+
+def change_profile(data_object):
+    change_options = {'1' : change_instrument,
+                      '2' : change_genre}
+    select_input = ''
+    while select_input != 'exit':
+        print("Alter Menu:: enter 1. to change your instrument, 2. to change your genre, or exit to exit\n")
+        select_input = input('Alter Menu:: enter number: ')
+        if change_options.get(select_input):
+           change_options[select_input](data_object)
+           select_input = input("Profile Menu:: enter to continue or exit to quit")
+        elif select_input == 'exit':
+            continue
+        else:
+            print('please select a valid number or type exit to quit')
+
+def pending_aud_request(data_object):
+    sent_requests_status = data_object.sent_requests_status
+    incoming_requests = data_object.pending_requests
+
+    print('Status of sent requests is:')
+    print(sent_requests_status)
+    u_input = input('press enter to continue:: ')
+    print('Incoming requests requests are:')
+    print(incoming_requests)
+    print('Press 1 to manage incoming requests')
+    u_input = input(':: ')
+    if u_input == '1':
+        for request in incoming_requests:
+            req_audition = request[1]
+            print(request[1])
+            print(f'Accept request from {request[0]}?')
+            u_input = input('[y/n] or enter to pass: ')
+            if u_input == 'y':
+                req_audition.update_accepted(status = True)
+                print(f'{request[0]} has been accepted')
+            elif u_input == 'n':
+                req_audition.update_accepted(status = False)
+                print(f'{request[0]} has been declined')
+            else:
+                print(f'passed: {request[0]} still pending')
+        print('All requests taken care of.')
+
+
+def pending_audition(data_object):
+    my_auditions = data_object.upcoming_auditions
+    print('Your upcoming auditions are:')
+    for audition in my_auditions :
+        print(audition[1])
+
+def audition_cleanup(data_object):
+    options_dict = {'1' : del_1,
+                    '2' : del_2,
+                    '3' : del_3}
+    print('press 1 to delete all rejected requests, 2 to delete completed auditions, and all to delete all auditions')
+    resp = input(':: ')
+    while True:
+        if options_dict.get(resp):
+            options_dict[resp](data_object)
+            break
+        else:
+            print('invalid input')
+    
+def del_1 (data_object):
+    rejected_requests = data_object.rejected_requests
+    if len(rejected_requests) > 0 :
+        print('Are you sure you want to delete?')
+        print(rejected_requests)
+        resp = input('y to delete: ')
+        if resp == 'y':
+            data_object.del_rej_aud_all
+            print('requests deleted...')
+    else:
+        print('Sorry, looks like there are no requests')
+
+def del_2 (data_object):
+    my_auditions = data_object.upcoming_auditions
+    if len(my_auditions) > 0 :
+        for audition in my_auditions:
+            print(f'Audition with: {audition[0]} has happend?')
+            resp = input('[y/n]: ')
+            if resp == 'y':
+                print('okay to delete?')
+                resp = input('[y/n]: ')
+                if resp == 'y':
+                    data_object.del_sing_aud(audition[1])
+                    print('deleted')
+                else:
+                    print('not deleted')
+            else:
+                print('Audition has not occured')
+
+def del_3 (data_object):
+    print('Are you sure you want to delete all your auditions?')
+    resp = input('[y/n]: ')
+    if resp == "y":
+        data_object.del_all_aud
