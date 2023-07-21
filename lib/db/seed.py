@@ -111,7 +111,7 @@ if __name__ == '__main__':
     # session.commit()
 
 
-    # print('seeding audition relations')
+    print('seeding audition relations')
     # session.query(Audition).delete()
     # session.commit()
 
@@ -124,14 +124,31 @@ if __name__ == '__main__':
     # session.add_all([a1, a2, a3, a4, a5])
     # session.commit()
 
-    # bm_list = []
-    # for i in range(1, 16):
-    #     bid = random.randint(1,7)
-    #     mid = random.randint(1,10)
-    #     instance = Audition(band_id = bid, musician_id = mid)
-    #     bm_list.append(instance)
-    # session.add_all(bm_list)
-    # session.commit()
+    bm_list = []
+    for i in range(1, 40):
+        i_id = random.randint(1,10)
+        grab_all_musicians = session.query(Musician.id).filter(Musician.instrument_id == i_id).all()
+        grab_all_bands = session.query(Band.id).filter(Band.instrument_id == i_id).all()
+        r_b = random.choice(grab_all_bands)
+        r_m = random.choice(grab_all_musicians)
+        request = random.choice(['musician', 'band'])
+        accept = random.choice([True, False, None])
+        instance = Audition(band_id = r_b[0], musician_id = r_m[0], requested_by = request, is_accepted = accept )
+        bm_list.append(instance)
+    
+    for i in range(1, 12):
+        g_id = random.randint(1,15)
+        grab_all_musicians = session.query(Musician.id).filter(Musician.genre_id == g_id).all()
+        grab_all_bands = session.query(Band.id).filter(Band.genre_id == g_id).all()
+        r_b = random.choice(grab_all_bands)
+        r_m = random.choice(grab_all_musicians)
+        request = random.choice(['musician', 'band'])
+        yolo = random.choice([True, False, None])
+        instance = Audition(band_id = r_b[0], musician_id = r_m[0], requested_by = request, is_accepted = yolo )
+        bm_list.append(instance)
+
+    session.add_all(bm_list)
+    session.commit()
 
     #if b_list[bid].instrument_id == m_list[mid].insturment_id:
         #run Audition requested_by = xxx, is_accepted = choice[true,false]
