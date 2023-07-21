@@ -111,45 +111,53 @@ if __name__ == '__main__':
     # session.commit()
 
 
-    print('seeding audition relations')
-    # session.query(Audition).delete()
-    # session.commit()
+    # print('seeding audition relations')
+    # # session.query(Audition).delete()
+    # # session.commit()
 
-    # a1 = Audition(musician_id = 6, band_id = 6, requested_by = "band")
-    # a2 = Audition (musician_id = 11, band_id = 6,requested_by = 'musician')
-    # a3 = Audition (musician_id= 13, band_id = 10, requested_by = 'musician', is_accepted = True)
-    # a4 = Audition (band_id = 1, musician_id = 2, requested_by =  'band', is_accepted = False)
-    # a5 = Audition (band_id = 8, musician_id =3, requested_by = 'band' )
+    # # a1 = Audition(musician_id = 6, band_id = 6, requested_by = "band")
+    # # a2 = Audition (musician_id = 11, band_id = 6,requested_by = 'musician')
+    # # a3 = Audition (musician_id= 13, band_id = 10, requested_by = 'musician', is_accepted = True)
+    # # a4 = Audition (band_id = 1, musician_id = 2, requested_by =  'band', is_accepted = False)
+    # # a5 = Audition (band_id = 8, musician_id =3, requested_by = 'band' )
 
-    # session.add_all([a1, a2, a3, a4, a5])
-    # session.commit()
+    # # session.add_all([a1, a2, a3, a4, a5])
+    # # session.commit()
 
-    bm_list = []
-    for i in range(1, 40):
-        i_id = random.randint(1,10)
-        grab_all_musicians = session.query(Musician.id).filter(Musician.instrument_id == i_id).all()
-        grab_all_bands = session.query(Band.id).filter(Band.instrument_id == i_id).all()
-        r_b = random.choice(grab_all_bands)
-        r_m = random.choice(grab_all_musicians)
-        request = random.choice(['musician', 'band'])
-        accept = random.choice([True, False, None])
-        instance = Audition(band_id = r_b[0], musician_id = r_m[0], requested_by = request, is_accepted = accept )
-        bm_list.append(instance)
+    # bm_list = []
+    # for i in range(1, 40):
+    #     i_id = random.randint(1,10)
+    #     grab_all_musicians = session.query(Musician.id).filter(Musician.instrument_id == i_id).all()
+    #     grab_all_bands = session.query(Band.id).filter(Band.instrument_id == i_id).all()
+    #     r_b = random.choice(grab_all_bands)
+    #     r_m = random.choice(grab_all_musicians)
+    #     request = random.choice(['musician', 'band'])
+    #     accept = random.choice([True, False, None])
+    #     instance = Audition(band_id = r_b[0], musician_id = r_m[0], requested_by = request, is_accepted = accept )
+    #     bm_list.append(instance)
     
-    for i in range(1, 12):
-        g_id = random.randint(1,15)
-        grab_all_musicians = session.query(Musician.id).filter(Musician.genre_id == g_id).all()
-        grab_all_bands = session.query(Band.id).filter(Band.genre_id == g_id).all()
-        r_b = random.choice(grab_all_bands)
-        r_m = random.choice(grab_all_musicians)
-        request = random.choice(['musician', 'band'])
-        yolo = random.choice([True, False, None])
-        instance = Audition(band_id = r_b[0], musician_id = r_m[0], requested_by = request, is_accepted = yolo )
-        bm_list.append(instance)
+    # for i in range(1, 12):
+    #     g_id = random.randint(1,15)
+    #     grab_all_musicians = session.query(Musician.id).filter(Musician.genre_id == g_id).all()
+    #     grab_all_bands = session.query(Band.id).filter(Band.genre_id == g_id).all()
+    #     r_b = random.choice(grab_all_bands)
+    #     r_m = random.choice(grab_all_musicians)
+    #     request = random.choice(['musician', 'band'])
+    #     yolo = random.choice([True, False, None])
+    #     instance = Audition(band_id = r_b[0], musician_id = r_m[0], requested_by = request, is_accepted = yolo )
+    #     bm_list.append(instance)
 
-    session.add_all(bm_list)
-    session.commit()
+    # session.add_all(bm_list)
+    # session.commit()
 
-    #if b_list[bid].instrument_id == m_list[mid].insturment_id:
-        #run Audition requested_by = xxx, is_accepted = choice[true,false]
-        #else get new rand bid or mid
+    # print('seed one musician')
+    # m1 = Musician(name = "Gene Frenkle", 
+    #               location = fake.address(), 
+    #               age = 42, 
+    #               skill_level = 5, 
+    #               email = fake.email(), 
+    #               instrument_id = 10,
+    #               genre_id = 1,
+    #               is_looking = True)
+    # session.add(m1)
+    # session.commit()   
