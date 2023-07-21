@@ -169,9 +169,9 @@ def manage_profile(data_object):
             3. See Pending Requests
             4. See Upcoming Auditions
             5. Remove Completed Auditions
-
-Type [exit] to exit
 \n
+Type [exit] to exit
+
             """)
         while True:
             select_input = input('\nSelect Number: ')
@@ -212,80 +212,112 @@ Type [exit] to exit\n""")
 def pending_aud_request(data_object):
     sent_requests_status = data_object.sent_requests_status
     incoming_requests = data_object.pending_requests
-
-    print('\nStatus of sent requests is:')
-    print(f'\n{sent_requests_status}')
-    u_input = input('\nPress [enter] to continue: ')
-    print('\nIncoming requests requests are: ')
-    print(f'\n{incoming_requests}')
-    u_input = input('\nPress [m] to manage incoming requests: ')
-    if u_input == 'm':
-        for request in incoming_requests:
-            req_audition = request[1]
-            print(f'\n{request[1]}')
-            print(f'Accept request from {request[0]}?')
-            u_input = input('[y/n] or [enter] to pass: ') #TODO LEFT OFF HERE
-            if u_input == 'y':
-                req_audition.update_accepted(status = True)
-                print(f'{request[0]} has been accepted')
-            elif u_input == 'n':
-                req_audition.update_accepted(status = False)
-                print(f'{request[0]} has been declined')
+    print(f'\nStatus of requests sent by {data_object.name}:')
+    if isinstance(sent_requests_status, list):
+        for request in sent_requests_status:
+            if request[1] == True:
+                print(f"\n{request[0]} | Status: ACCEPTED")
+            elif request[1] == False:
+                print(f"\n{request[0]} | Status: REJECTED")
             else:
-                print(f'passed: {request[0]} still pending')
-        print('\nAll requests taken care of.')
+                print(f"\n{request[0]} | Status: PENDING")
+    else:
+        print(f"\n{sent_requests_status}")
+    u_input = input('\nPress [enter] to continue: ')
+    func_response = what_is_string(data_object)
+    print(f'\nIncoming requests from {func_response}: \n')
+    if isinstance(incoming_requests, list):
+        for request in incoming_requests:
+            print(f"{request[0].name} | Instrument: {request[0].instrument.name} | Genre: {request[0].genre.name}")
+        u_input = input('\nPress [m] to manage incoming requests or [enter] to continue: ')
+        if u_input == 'm':
+            for request in incoming_requests:
+                b_m_obj = request[0]
+                req_audition = request[1]
+                b_m_obj.show_info
+                print(f'\nAccept request from {b_m_obj.name}?')
+                u_input = input('\n[y/n] or [enter] to pass: ')
+                if u_input == 'y':
+                    req_audition.update_accepted(status = True)
+                    print(f'\n{b_m_obj.name} has been accepted')
+                elif u_input == 'n':
+                    req_audition.update_accepted(status = False)
+                    print(f'\n{b_m_obj.name} has been declined')
+                else:
+                    print(f"\nPassed: {b_m_obj.name}'s request is still pending")
+            print('\nAll requests taken care of.')
+    else:
+        print(incoming_requests)
+    input("\nPress [enter] to continue: ")
 
 
 def pending_audition(data_object):
     my_auditions = data_object.upcoming_auditions
-    print('Your upcoming auditions are:')
-    for audition in my_auditions :
-        print(audition[1])
+    print('\nYour upcoming auditions are:')
+    if len(my_auditions) > 0:
+        for audition in my_auditions :
+            print(f"\n{audition[1].musician.name} has an audition with {audition[1].band.name}")
+    else:
+        print("No upcoming auditions")
+    input("\nPress [enter] to continue: ")
 
 def audition_cleanup(data_object):
     options_dict = {'1' : del_1,
                     '2' : del_2,
                     '3' : del_3}
-    print('press 1 to delete all rejected requests, 2 to delete completed auditions, and all to delete all auditions')
-    resp = input(':: ')
+    print("""\n\n
+        1. Delete all rejected requests 
+        2. Delete completed auditions
+        3. Delete all auditions
+    """)
+    resp = input('\nSelect Number: ')
     while True:
         if options_dict.get(resp):
             options_dict[resp](data_object)
             break
         else:
-            print('invalid input')
+            print('\nInvalid input')
     
 def del_1 (data_object):
     rejected_requests = data_object.rejected_requests
     if len(rejected_requests) > 0 :
-        print('Are you sure you want to delete?')
-        print(rejected_requests)
-        resp = input('y to delete: ')
+        print('\nAre you sure you want to delete?')
+        for audition in rejected_requests:
+            if isinstance(data_object, Band):
+                print(f"\n{audition.musician.name} has rejected audition.")
+            else:
+                print(f"\n{audition.band.name} has rejected audition.")
+        resp = input('\nType [y] to delete or press [enter] to keep: ')
         if resp == 'y':
             data_object.del_rej_aud_all
-            print('requests deleted...')
+            print('\nRequests deleted...')
     else:
-        print('Sorry, looks like there are no requests')
+        print('\nSorry, looks like there are no requests')
+    input("\n\nPress [enter] to continue: ")
 
 def del_2 (data_object):
     my_auditions = data_object.upcoming_auditions
     if len(my_auditions) > 0 :
         for audition in my_auditions:
-            print(f'Audition with: {audition[0]} has happend?')
-            resp = input('[y/n]: ')
+            print(f'\nAudition with: {audition[0]} has happend?')
+            resp = input('\n[y/n]: ')
             if resp == 'y':
-                print('okay to delete?')
-                resp = input('[y/n]: ')
+                print('\nOkay to delete?')
+                resp = input('\n[y/n]: ')
                 if resp == 'y':
                     data_object.del_sing_aud(audition[1])
-                    print('deleted')
+                    print('\nDELETED')
                 else:
-                    print('not deleted')
+                    print('\nNOT DELETED')
             else:
-                print('Audition has not occured')
+                print('\nAudition has not occured')
+    else:
+        print('\nSorry, looks like there are no requests')
+    input("\n\nPress [enter] to continue: ")
 
 def del_3 (data_object):
-    print('Are you sure you want to delete all your auditions?')
-    resp = input('[y/n]: ')
+    print('\nAre you sure you want to delete all your auditions?')
+    resp = input('\n[y/n]: ')
     if resp == "y":
         data_object.del_all_aud
+    input("\n\nPress [enter] to continue: ")
