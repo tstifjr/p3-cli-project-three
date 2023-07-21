@@ -23,7 +23,7 @@ def band_menu():
         "3": manage_profile
     }
 
-    while True: #initate and stay in Musician Menu
+    while True: 
         if not band:
             print("\n\n\n\n\n")
             print("""
@@ -35,7 +35,7 @@ def band_menu():
                 ) #intro statements
             print("\n\n\n\nWelcome to the band hub!\n")
             print("Let's see if you're in our database! What is your band's name?\n\n\n\n")
-        while not isinstance(band, Band): #select a musician to be
+        while not isinstance(band, Band): 
             name = input("\nEnter name: ")
             print("\n")
             if name == "exit":

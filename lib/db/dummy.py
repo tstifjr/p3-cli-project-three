@@ -56,21 +56,22 @@ def actively_looking(musician):
             print('not a valid input')
 
 def func_1 (musician):
-    print('Here are some bands need a member who plays your insturment')
+    print(f"\n::::::Here are Bands That Play {musician.instrument.name}::::::\n")
     the_list = musician.bands_look_same_instr()
     for b in the_list:
         print(f"{b.name} | Genre: {b.genre.name}")
+    print("")
     req_aud_from_list(musician, the_list)
 
 def func_2 (musician):
-    print('Here are some bands play your genre')
+    print(f"\n::::::Here are Bands That Play {musician.genre.name}::::::\n")
     the_list = musician.bands_look_same_genre()
     for b in the_list:
         print(f"{b.name} | instrument needed: {b.instrument.name}")
     req_aud_from_list(musician, the_list)
 
 def func_3 (musician):
-    print('Here are all the bands looking for members')
+    print('\n::::::All Bands Currently Looking::::::\n')
     the_list = Band.bands_looking()
     the_list.sort(key = lambda band : band.genre.name)
     for b in the_list:
@@ -82,14 +83,14 @@ def func_3 (musician):
 def name_search(musician):
     print('Please Enter the name of the Band to search for')
     while True:
-        name = input("Enter the Band's name: ")
+        name = input("\nEnter the Band's name: ")
         result = Band.find_band_by_name(name)
         if isinstance(result, Band):
             the_list = [result]
             result.show_info
             req_aud_from_list(musician, the_list)
-            print("Would you like to search for a different name? ")
-            search_again = input("[y/n]: ")
+            print("\nWould you like to search for a different name? ")
+            search_again = input("\n[y/n]: ")
             if search_again == "n":
                 break
 
@@ -100,13 +101,13 @@ def name_search(musician):
 ########################################
 
 def make_audition_request(musician):
-    print('Please provide the name of the band you want to audition for')
+    print('\nPlease provide the name of the band you want to audition for')
     band = None
     while not isinstance(band, Band):
-        band_input = input("Band's name is:  ")
+        band_input = input("\nBand's name is:  ")
         band = Band.find_band_by_name(band_input)
-    print(f"Send audition request to {band.name}?\n")
+    print(f"\nSend audition request to {band.name}?\n")
     band.show_info
-    response = input("[y/n]: ")
+    response = input("\n[y/n]: ")
     if (response == "y" or response == "yes"):
         musician.request_audition(band)

@@ -3,10 +3,10 @@ from global_helpers import exit_program
 from dummy import *
 
 def check_musician_name(musician):
-    print(f'Is this you? : {musician.name}')
-    resp = input('y/n: ')
+    print(f'\nIs this your Name? : {musician.name}')
+    resp = input('\ny/n: ')
     if resp == 'y':
-        print(f"Welcome, {musician.name}! \n")
+        print(f"\n\nWelcome, {musician.name}! \n")
         return musician
     elif resp == 'n':
         return None
@@ -15,10 +15,10 @@ def check_musician_name(musician):
         return None
 
 def create_new_musician():
-    print("Would you like to create a new account?")
+    print("Would you like to create a new account?\n")
     account = input("[y/n]: ")
     if (account == "y" or account == "yes"):
-        print("Let's get you set up!")
+        print("Let's get you set up!\n")
         first_name = input("First Name: ").rstrip().capitalize()
         last_name = input("Last Name: ").rstrip().capitalize()
         full_name = f"{first_name} {last_name}"
@@ -30,10 +30,10 @@ def create_new_musician():
         print("What is your primary instrument?\n")
         instrument_id = choose_an_instrument()
 
-        print("What genre do you like to play the most?")
+        print("What genre do you like to play the most?\n")
         genre_id = choose_a_genre()
 
-        print("Are you currently looking to join a band?")
+        print("Are you currently looking to join a band?\n")
         looking = input("[y/n]: ")
         if (looking == "y" or looking =="yes"):
             looking = 1
@@ -54,16 +54,17 @@ def create_new_musician():
 
 def musician_menu():
     musician = None
-    m_menu_dic = {'1' : band_search_menu, #dict to hold functions for each menu option
-                '2' : make_audition_request,
-                '3' : manage_profile,
-                }
+    m_menu_dic = {
+        '1' : band_search_menu, 
+        '2' : make_audition_request,
+        '3' : manage_profile,
+    }
     
-    while True: #initate and stay in Musician Menu
+    while True: 
         if not musician: #intro statements
             print("Welcome to the musician's hub!")
             print("Let's see if you're in our database! What is your name?")
-        while not isinstance(musician, Musician): #select a musician to be
+        while not isinstance(musician, Musician): 
             name = input("Enter name: ")
             if name == "exit":
                 exit_program()
@@ -84,15 +85,16 @@ def musician_menu():
             3. View or alter your profile\n
             """)
         
-        while True: #loop to select a valid option
-            m_menu_select = input("Please enter a number for your choice: ")
+        while True: 
+            m_menu_select = input("\n\n\nPlease enter a number for your choice: ")
             if m_menu_dic.get(m_menu_select):
                 m_menu_dic[m_menu_select](musician)
                 break
             else: 
-                print("Please select a number between 1 and 3")
+                print("\nPlease select a number between 1 and 3")
 
-        print('Would you like to do something else?')
-        resp_2 = input('y/n: ')
+        print('\nWould you like to do something else?')
+        resp_2 = input('\n[y/n]: ')
         if resp_2 == 'n':
-            exit_program()
+            break
+            # exit_program()
