@@ -11,7 +11,7 @@ def check_musician_name(musician):
     elif resp == 'n':
         return None
     else:
-        print('invalid response')
+        print('\nInvalid response')
         return None
 
 def create_new_musician():
@@ -62,8 +62,18 @@ def musician_menu():
     
     while True: 
         if not musician: #intro statements
-            print("Welcome to the musician's hub!")
-            print("Let's see if you're in our database! What is your name?")
+            print("""\n\n\n\n
+ __  __           _      _               _    _       _     
+|  \/  |         (_)    (_)             | |  | |     | |    
+| \  / |_   _ ___ _  ___ _  __ _ _ __   | |__| |_   _| |__  
+| |\/| | | | / __| |/ __| |/ _` | '_ \  |  __  | | | | '_ \ 
+| |  | | |_| \__ \ | (__| | (_| | | | | | |  | | |_| | |_) |
+|_|  |_|\__,_|___/_|\___|_|\__,_|_| |_| |_|  |_|\__,_|_.__/ 
+```````````````````````````````````````````````````````````
+\n\n
+            """)
+            print("Welcome to the musician hub!")
+            print("Let's see if you're in our database! What is your name?\n\n\n\n")
         while not isinstance(musician, Musician): 
             name = input("Enter name: ")
             if name == "exit":
@@ -79,14 +89,22 @@ def musician_menu():
 
         #menu options to choose from
         print(""" 
-            Please select one of the options bewlow: \n
+
+ _____  _                       __  __       _           _____      _           _   _             
+|  __ \| |                     |  \/  |     | |         / ____|    | |         | | (_)            
+| |__) | | ___  __ _ ___  ___  | \  / | __ _| | _____  | (___   ___| | ___  ___| |_ _  ___  _ __  
+|  ___/| |/ _ \/ _` / __|/ _ \ | |\/| |/ _` | |/ / _ \  \___ \ / _ \ |/ _ \/ __| __| |/ _ \| '_ \ 
+| |    | |  __/ (_| \__ \  __/ | |  | | (_| |   <  __/  ____) |  __/ |  __/ (__| |_| | (_) | | | |
+|_|    |_|\___|\__,_|___/\___| |_|  |_|\__,_|_|\_\___| |_____/ \___|_|\___|\___|\__|_|\___/|_| |_|
+```````````````````````````````````````````````````````````````````````````````````````````````````
+\n
             1. Search for a band\n
             2. Request audition\n
             3. View or alter your profile\n
             """)
         
         while True: 
-            m_menu_select = input("\n\n\nPlease enter a number for your choice: ")
+            m_menu_select = input("\n\n\nSelect Number: ")
             if m_menu_dic.get(m_menu_select):
                 m_menu_dic[m_menu_select](musician)
                 break

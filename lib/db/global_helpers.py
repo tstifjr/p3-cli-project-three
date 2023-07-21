@@ -22,7 +22,7 @@ def exit_program():
 ⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⡀⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⢸⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⣇⠀⠀⠀⠀⠀⠀⠀⡸⠀⠀⠀⠀⠀⠀⢀⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣆⠀⠀⠀⠀⠀⣰⠃⠀⠀⠀⠀⠀⢠⡾⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⠏⠙⠒⠀⠀⠤⢯⡀⠀⠀⠀⠀⣰⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⠏⠙⠒⠀⠀⠤⢯⡀⠀⠀⠀⠀⣰⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀THANKS FOR STOPPING BY!
 ⠀⠀⠀⠀⠀⠀⣀⣀⣠⣿⡟⠀⠀⠀⢠⠆⠀⡤⠁⠀⠀⠒⢻⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⢠⣿⡹⣿⣿⡿⠁⠀⠀⢀⠏⢀⡞⠁⠀⠀⠀⢀⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⢀⣠⣼⢿⣿⣷⣯⣵⣒⣤⡤⣞⣀⣞⡀⠀⠀⠀⠀⣼⡃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -37,7 +37,6 @@ def exit_program():
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
     """)
-    print("Thanks for Stopping By!")
     sys.exit(0)
 
 # could be a class method in Instrument?
@@ -144,7 +143,7 @@ def req_aud_from_list(b_m_obj, list_b_or_m):
                 if check_input == 'y':
                     b_m_obj.request_audition(result)
                 else:
-                    print('No request made')
+                    print('\nNo request made')
         else :
             print('\nNo request(s) made')
 
@@ -186,7 +185,8 @@ Type [exit] to exit
 
 def view_profile(data_object):
     data_object.show_info
-    print("\n\n")
+    input(f'\n\n Press [enter] to continue')
+    print("\n")
 
 def change_profile(data_object):
     change_options = {'1' : change_instrument,
@@ -258,7 +258,7 @@ def pending_audition(data_object):
         for audition in my_auditions :
             print(f"\n{audition[1].musician.name} has an audition with {audition[1].band.name}")
     else:
-        print("No upcoming auditions")
+        print("\nNo upcoming auditions")
     input("\nPress [enter] to continue: ")
 
 def audition_cleanup(data_object):
