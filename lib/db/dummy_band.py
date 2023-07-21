@@ -109,7 +109,7 @@ def func_3(band):
 
 def name_search(band):
     while True:
-        name = input("\nEnter the musicians name: ")
+        name = input("\nEnter the Musician's name: ")
         result = Musician.find_musician_by_name(name)
         if isinstance(result, Musician):
             musician_list = [result]
