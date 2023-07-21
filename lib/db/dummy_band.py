@@ -15,14 +15,23 @@ def musician_search_menu(band):
         '4' : instrument_search
     }
     while True:
-        print('Please select your method of band search.')
+        print("""\n\n\n\n\n
+        ╔═╗┌─┐┌─┐┬─┐┌─┐┬ ┬  ╔╦╗┌─┐┌┬┐┬ ┬┌─┐┌┬┐
+        ╚═╗├┤ ├─┤├┬┘│  ├─┤  ║║║├┤  │ ├─┤│ │ ││
+        ╚═╝└─┘┴ ┴┴└─└─┘┴ ┴  ╩ ╩└─┘ ┴ ┴ ┴└─┘─┴┘
+        ``````````````````````````````````````
+\n\n
+              """)
         print('''
             1. Actively looking for band to join\n
             2. By name\n
             3. By genre\n
-            4. By instrument\n      
+            4. By instrument\n
+\n
+
+Type [exit] to leave this search      
             ''')
-        menu_selections = input('Please choose a number or type exit to exit: ')
+        menu_selections = input('Select Number: ')
         if menu_selections == "exit":
             break
         elif search_menu_dict.get(menu_selections):
@@ -40,44 +49,54 @@ def actively_looking(band):
         '3' : func_3
         }    
     while True:
-        print("""
+        print("""\n\n\n\n\n
     ╔╦╗┬ ┬┌─┐┬┌─┐┬┌─┐┌┐┌┌─┐  ╦  ┌─┐┌─┐┬┌─┬┌┐┌┌─┐  ╔═╗┌─┐┬─┐  ╔╗ ┌─┐┌┐┌┌┬┐┌─┐
     ║║║│ │└─┐││  │├─┤│││└─┐  ║  │ ││ │├┴┐│││││ ┬  ╠╣ │ │├┬┘  ╠╩╗├─┤│││ ││└─┐
     ╩ ╩└─┘└─┘┴└─┘┴┴ ┴┘└┘└─┘  ╩═╝└─┘└─┘┴ ┴┴┘└┘└─┘  ╚  └─┘┴└─  ╚═╝┴ ┴┘└┘─┴┘└─┘
+    ````````````````````````````````````````````````````````````````````````
+\n\n
             """)
-        print('1. to see muscians that play the instrument need\n' +
-            '2. to see musicians that play your genre\n' +
-            '3. to see all musicians\n' +
-            '\ntype "exit" to leave this search.\n')
-        new_input = input('select number: ')
+        print("""
+            1. to see muscians that play the instrument need
+
+            2. to see musicians that play your genre
+
+            3. to see all musicians
+\n\n
+
+Type [exit] to leave this search
+
+        """)
+        new_input = input('Select Number: ')
         print("")
         if new_input == "exit":
             break
         elif options_dict.get(new_input):
             options_dict[new_input](band)
             print('\nsearch some more?')
-            new_input = input('[y/n] :')
+            new_input = input('\n[y/n] :')
             if new_input == 'n':
                 break
         else :
             print('not a valid input')
 
 def func_1(band):
-    print(f"Here are musicians that play {band.instrument.name}\n")
+    print(f"\n::::::Here are Musicians That Play {band.instrument.name}::::::\n")
     musician_list = band.musicians_look_same_instr()
     for m in musician_list:
         print(f"{m.name} | Genre: {m.genre.name}")
-    print("\n")
+    print("")
     req_aud_from_list(band, musician_list)  
 
 def func_2(band):
-    print(f"Here are musicians that play {band.genre.name}\n")
+    print(f"\n::::::Here are Musicians That Play {band.genre.name}::::::\n")
     the_list = band.musicians_look_same_genre()
     for m in the_list:
         print(f"{m.name} | {m.instrument.name} | Skill level: {m.skill_level}")
     req_aud_from_list(band, the_list)
 
 def func_3(band):
+    print("\n::::::All Musicians Currently Looking::::::\n")
     looking_list = session.query(Musician).filter(Musician.is_looking == True).all()
     looking_list.sort(key = lambda musician : musician.genre.name) 
     for m in looking_list:
@@ -90,14 +109,14 @@ def func_3(band):
 
 def name_search(band):
     while True:
-        name = input("Enter the musicians name: ")
+        name = input("\nEnter the musicians name: ")
         result = Musician.find_musician_by_name(name)
         if isinstance(result, Musician):
             musician_list = [result]
             result.show_info
             req_aud_from_list(band, musician_list)
-            print("Would you like to search for a different name? ")
-            search_again = input("[y/n]: ")
+            print("\nWould you like to search for a different name? ")
+            search_again = input("\n[y/n]: ")
             if search_again == "n":
                 break
 
@@ -108,14 +127,14 @@ def name_search(band):
 ########################################
 
 def make_audition_request(band):
-    print('Please provide the name of the musician you want to audition')
+    print('\nPlease provide the name of the musician you want to audition')
     musician = None
     while not isinstance(musician, Musician):
-        musician_input = input("Musician's name is:  ")
+        musician_input = input("\nMusician's name is:  ")
         musician = Musician.find_musician_by_name(musician_input)
-    print(f"Send audition request to {musician.name}?\n")
     musician.show_info
-    response = input("[y/n]: ")
+    print(f"\nSend audition request to {musician.name}?")
+    response = input("\n[y/n]: ")
     if (response == "y" or response == "yes"):
         band.request_audition(musician)
     

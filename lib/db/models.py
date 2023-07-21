@@ -40,10 +40,10 @@ class Musician (Base):
     def find_musician_by_name(cls, name):
         musician_list = session.query(cls).filter(cls.name.like(f'%{name}%')).all()
         if len(musician_list) == 0:
-            print("No records found")
+            print("\nNo records found")
             return None
         elif len(musician_list) > 1:
-            print("More than one record found. Please provide a full name.")
+            print("\nMore than one record found. Please provide a full name.")
             return musician_list
         else:
             return musician_list[0]
@@ -55,18 +55,15 @@ class Musician (Base):
 
     @classmethod
     def skilled_list(cls):
-        five = session.query(Musician.skill_level).filter(Musician.skill_level == 5).all()
-        four = session.query(Musician.skill_level).filter(Musician.skill_level == 4).all()
-        three = session.query(Musician.skill_level).filter(Musician.skill_level == 3).all()
-        two = session.query(Musician.skill_level).filter(Musician.skill_level == 2).all()
-        one = session.query(Musician.skill_level).filter(Musician.skill_level == 1).all()
         all = session.query(Musician).all() 
+        query = session.query(Musician.skill_level, func.count(Musician.id).label('skill_count')).group_by(Musician.skill_level)
+        skill_list = query.all()
         return (f"""
-Skill Level 5:   {len(five)}
-Skill Level 4:   {len(four)}
-Skill Level 3:   {len(three)}
-Skill Level 2:   {len(two)}
-Skill Level 1:   {len(one)}
+Skill Level 5:   {skill_list[4][1]}
+Skill Level 4:   {skill_list[3][1]}
+Skill Level 3:   {skill_list[2][1]}
+Skill Level 2:   {skill_list[1][1]}
+Skill Level 1:   {skill_list[0][1]}
 --------------------------
 Total Musicians: {len(all)}
         """)
@@ -93,7 +90,7 @@ Total Musicians: {len(all)}
     def show_info(self):
         print(f"")
         print(f"""
-:::::::::::: {self.name} :::::::::::::::::::
+:::::::::::: {self.name} :::::::::::::::::::::::::
 :::
 ::: email:              {self.email}
 ::: age:                {self.age}
@@ -137,12 +134,18 @@ Total Musicians: {len(all)}
     @property
     def pending_requests(self):
         query = session.query(Band.name, Audition).join(Audition).filter(Audition.is_accepted == None, Audition.requested_by == 'band', Audition.musician_id == self.id)
-        return query.all()
+        if len(query.all()) > 0:
+            return query.all()
+        else:
+            return "No audtion requests received"
 
     @property
     def sent_requests_status(self):
         query  = session.query(Band.name, Audition.is_accepted).join(Audition).filter(Audition.requested_by  == 'musician', Audition.musician_id == self.id)
-        return query.all()
+        if len(query.all()) > 0:
+            return query.all()
+        else:
+            return "No audtion requests sent"
 
     @property
     def upcoming_auditions(self):
@@ -173,7 +176,13 @@ Total Musicians: {len(all)}
     @classmethod
     def get_musician_with_most_auditions(cls):
         query = session.query(cls, func.count(Audition.id).label('audition_count')).filter(Audition.musician_id == cls.id).group_by(Audition.musician_id).order_by(desc('audition_count'))
-        return query.first()
+        return f"{query.first()[0].name} has {query.first()[1]} auditions"
+    
+    @classmethod
+    def percent_looking_musician(cls):
+        looking = session.query(cls).filter(cls.is_looking == True).all()
+        all_musicians = session.query(cls).all()
+        return f"{int(len(looking)/len(all_musicians) * 100)}% of musicians are looking for bands"
 
 class Band (Base):
     __tablename__ = 'bands'
@@ -231,7 +240,7 @@ class Band (Base):
     def show_info(self):
         print(f"")
         print(f"""
-:::::::::::: {self.name} :::::::::::::::::::
+:::::::::::: {self.name} :::::::::::::::::::::::::
 :::
 ::: Website:            {self.website}
 ::: Established:        {self.formation_date}
@@ -274,12 +283,18 @@ class Band (Base):
     @property
     def pending_requests(self):
         query = session.query(Musician.name, Audition).join(Audition).filter(Audition.is_accepted == None, Audition.requested_by == 'musician', Audition.band_id == self.id)
-        return query.all()
+        if len(query.all()) > 0:
+            return query.all()
+        else:
+            return "No audtion requests received"
 
     @property
     def sent_requests_status(self):
         query  = session.query(Musician.name, Audition.is_accepted).join(Audition).filter(Audition.requested_by  == 'band', Audition.band_id == self.id)
-        return query.all()
+        if len(query.all()) > 0:
+            return query.all()
+        else:
+            return "No audtion requests sent"
 
     @property
     def upcoming_auditions(self):
@@ -310,7 +325,13 @@ class Band (Base):
     @classmethod
     def get_band_with_most_auditions(cls):
         query = session.query(cls, func.count(Audition.id).label('audition_count')).filter(Audition.band_id == cls.id).group_by(Audition.band_id).order_by(desc('audition_count'))
-        return query.first()
+        return f"{query.first()[0].name} has {query.first()[1]} auditions"
+    
+    @classmethod
+    def percent_looking_band(cls):
+        looking = session.query(cls).filter(cls.is_looking == True).all()
+        all_bands = session.query(cls).all()
+        return f"{int(len(looking)/len(all_bands) * 100)}% of bands are looking for members"
 
 class Instrument (Base):
     __tablename__ = 'instruments'
