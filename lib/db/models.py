@@ -54,6 +54,25 @@ class Musician (Base):
         session.commit()
 
     @classmethod
+    def skilled_list(cls):
+        five = session.query(Musician.skill_level).filter(Musician.skill_level == 5).all()
+        four = session.query(Musician.skill_level).filter(Musician.skill_level == 4).all()
+        three = session.query(Musician.skill_level).filter(Musician.skill_level == 3).all()
+        two = session.query(Musician.skill_level).filter(Musician.skill_level == 2).all()
+        one = session.query(Musician.skill_level).filter(Musician.skill_level == 1).all()
+        all = session.query(Musician).all() 
+        return (f"""
+Skill Level 5:   {len(five)}
+Skill Level 4:   {len(four)}
+Skill Level 3:   {len(three)}
+Skill Level 2:   {len(two)}
+Skill Level 1:   {len(one)}
+--------------------------
+Total Musicians: {len(all)}
+        """)
+        
+    
+    @classmethod
     def get_most_popular_instrument (cls):
         my_list = session.query(Instrument).join(cls).filter(Instrument.id == cls.instrument_id).all()
         is_sorted = sorted(my_list, key = lambda el : len(el.musicians), reverse = True)

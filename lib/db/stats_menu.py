@@ -50,7 +50,14 @@ Most Popular Genre
 Most Popular Instrument
 ````````````````````````
 {Musician.get_most_popular_instrument()}
+
+
+Total Musician by Skills
+`````````````````````````
+{Musician.skilled_list()}
         """)
+
+        input("Please [enter] to continue:")
 #######################################
 
 #           MAIN STATS MENU
