@@ -57,11 +57,11 @@ def actively_looking(band):
 \n\n
             """)
         print("""
-            1. to see muscians that play the instrument need
+            1. See muscians that play the instrument need
 
-            2. to see musicians that play your genre
+            2. See musicians that play your genre
 
-            3. to see all musicians
+            3. See all musicians
 \n\n
 
 Type [exit] to leave this search

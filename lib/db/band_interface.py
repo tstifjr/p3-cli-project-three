@@ -1,5 +1,5 @@
 from models import *
-from dummy_band import musician_search_menu, make_audition_request
+from band_functions import musician_search_menu, make_audition_request
 from global_helpers import *
 from band_create_new import create_new_band
 
@@ -63,7 +63,7 @@ def band_menu():
             """)
         
         while True:
-            b_menu_select = input("\n\n\nPlease enter a number for your choice: ")
+            b_menu_select = input("\n\n\nSelect Number: ")
             if b_menu_dict.get(b_menu_select):
                 b_menu_dict[b_menu_select](band)
                 break

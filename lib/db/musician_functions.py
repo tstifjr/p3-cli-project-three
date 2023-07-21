@@ -16,20 +16,30 @@ def band_search_menu(musician):
         '4' : instrument_search #imported from global
     }
     while True:
-        print('Please select your method of band search.')
         print('''
+
+  _____                     _       __  __      _   _               _ 
+ / ____|                   | |     |  \/  |    | | | |             | |
+| (___   ___  __ _ _ __ ___| |__   | \  / | ___| |_| |__   ___   __| |
+ \___ \ / _ \/ _` | '__/ __| '_ \  | |\/| |/ _ \ __| '_ \ / _ \ / _` |
+ ____) |  __/ (_| | | | (__| | | | | |  | |  __/ |_| | | | (_) | (_| |
+|_____/ \___|\__,_|_|  \___|_| |_| |_|  |_|\___|\__|_| |_|\___/ \__,_|
+``````````````````````````````````````````````````````````````````````
+
+
             1. Actively looking for new members.\n
             2. By name\n
             3. By genre\n
-            4. By instrument    
+            4. By instrument 
+\n\n\n   
             ''')
-        menu_selections = input('Please choose a number or type exit to exit: ')
+        menu_selections = input('Select number or type [exit] to exit: ')
         if menu_selections == "exit":
             break
         elif search_menu_dict.get(menu_selections):
             search_menu_dict[menu_selections](musician)
         else:
-            print('invalid input')
+            print('Invalid input')
 
 ################           ACTIVELY LOOKING          ############
 
@@ -39,21 +49,39 @@ def actively_looking(musician):
                     '2' : func_2,
                     '3' : func_3}    
     while True:
-        print('1. to see bands that need your instrument and are looking\n' +
-            '2. to see bands that play your genre and are looking\n' +
-            '3. to see all bands currently looking for members\n' +
-            'exit to leave this search.\n')
-        new_input = input('select number: ')
+        print("""
+              
+  ____                  _       _                 _    _                __             __  __           _      _                 
+ |  _ \                | |     | |               | |  (_)              / _|           |  \/  |         (_)    (_)                
+ | |_) | __ _ _ __   __| |___  | |     ___   ___ | | ___ _ __   __ _  | |_ ___  _ __  | \  / |_   _ ___ _  ___ _  __ _ _ __  ___ 
+ |  _ < / _` | '_ \ / _` / __| | |    / _ \ / _ \| |/ / | '_ \ / _` | |  _/ _ \| '__| | |\/| | | | / __| |/ __| |/ _` | '_ \/ __|
+ | |_) | (_| | | | | (_| \__ \ | |___| (_) | (_) |   <| | | | | (_| | | || (_) | |    | |  | | |_| \__ \ | (__| | (_| | | | \__ \ 
+ |____/ \__,_|_| |_|\__,_|___/ |______\___/ \___/|_|\_\_|_| |_|\__, | |_| \___/|_|    |_|  |_|\__,_|___/_|\___|_|\__,_|_| |_|___/
+ `````````````````````````````````````````````````````````````` __/ | ```````````````````````````````````````````````````````````                                                            
+                                                               |___/   
+            
+
+            1. See bands that need your instrument
+            
+            2. See bands that play your genre
+            
+            3. See all bands
+\n\n
+
+Type [exit] to leave this search
+        """)
+        new_input = input('\nSelect Number: ')
+        
         if new_input == "exit":
             break
         elif options_dict.get(new_input):
             options_dict[new_input](musician)
-            print('search some more?')
-            new_input = input('[y/n] :')
+            print('\nSearch some more?')
+            new_input = input('\n[y/n] :')
             if new_input == 'n':
                 break
         else :
-            print('not a valid input')
+            print('\nNot a valid input')
 
 def func_1 (musician):
     print(f"\n::::::Here are Bands That Play {musician.instrument.name}::::::\n")
@@ -81,7 +109,6 @@ def func_3 (musician):
 ################           NAME SEARCH               ############
 
 def name_search(musician):
-    print('Please Enter the name of the Band to search for')
     while True:
         name = input("\nEnter the Band's name: ")
         result = Band.find_band_by_name(name)

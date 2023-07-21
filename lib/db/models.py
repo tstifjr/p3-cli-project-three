@@ -90,7 +90,8 @@ Total Musicians: {len(all)}
     def show_info(self):
         print(f"")
         print(f"""
-:::::::::::: {self.name} :::::::::::::::::::::::::
+              {self.name}
+::::::::::::::::::::::::::::::::::::::::::::::::::
 :::
 ::: email:              {self.email}
 ::: age:                {self.age}
@@ -106,7 +107,7 @@ Total Musicians: {len(all)}
         a = Audition(musician_id = self.id, band_id = band.id, requested_by = 'musician')
         session.add(a)
         session.commit()
-        print("your auditon request has been made !!!")
+        print("\nYour auditon request has been made !!!")
    
     def update_instrument(self, i_id):
         self.instrument_id = i_id
@@ -133,7 +134,7 @@ Total Musicians: {len(all)}
     ##############check filter###########
     @property
     def pending_requests(self):
-        query = session.query(Band.name, Audition).join(Audition).filter(Audition.is_accepted == None, Audition.requested_by == 'band', Audition.musician_id == self.id)
+        query = session.query(Band, Audition).join(Audition).filter(Audition.is_accepted == None, Audition.requested_by == 'band', Audition.musician_id == self.id)
         if len(query.all()) > 0:
             return query.all()
         else:
@@ -240,7 +241,8 @@ class Band (Base):
     def show_info(self):
         print(f"")
         print(f"""
-:::::::::::: {self.name} :::::::::::::::::::::::::
+               {self.name}
+::::::::::::::::::::::::::::::::::::::::::::::::::
 :::
 ::: Website:            {self.website}
 ::: Established:        {self.formation_date}
@@ -255,7 +257,7 @@ class Band (Base):
         a = Audition(musician_id = musician.id, band_id = self.id, requested_by = 'band')
         session.add(a)
         session.commit()
-        print("your auditon request has been made !!!")
+        print("\nYour auditon request has been made !!!")
 
     def update_instrument(self, i_id):
         self.instrument_id = i_id
@@ -282,7 +284,7 @@ class Band (Base):
    ######check Filter##############
     @property
     def pending_requests(self):
-        query = session.query(Musician.name, Audition).join(Audition).filter(Audition.is_accepted == None, Audition.requested_by == 'musician', Audition.band_id == self.id)
+        query = session.query(Musician, Audition).join(Audition).filter(Audition.is_accepted == None, Audition.requested_by == 'musician', Audition.band_id == self.id)
         if len(query.all()) > 0:
             return query.all()
         else:
