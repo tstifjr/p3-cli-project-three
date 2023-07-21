@@ -2,10 +2,10 @@ from models import *
 from global_helpers import choose_an_instrument, choose_a_genre
 
 def create_new_band():
-    print("Would you like to create a new account?")
+    print("Would you like to create a new account?\n")
     account = input("[y/n]: ")
     if (account == "y" or account == "yes"):
-        print("Let's get you set up!")
+        print("Let's get you set up!\n")
         band_name = input("Band Name: ").rstrip().capitalize()
         formation_date = int(input("What year did the band form: "))
         website = input("Band website: ").rstrip()
@@ -14,10 +14,10 @@ def create_new_band():
         print("What role are you trying to fill?\n")
         instrument_id = choose_an_instrument()
 
-        print("What is the primary genre you play?")
+        print("What is the primary genre you play?\n")
         genre_id = choose_a_genre()
 
-        print("Are you currently looking for a new band member?")
+        print("Are you currently looking for a new band member?\n")
         looking = input("[y/n]: ")
         if (looking == "y" or looking =="yes"):
             looking = 1

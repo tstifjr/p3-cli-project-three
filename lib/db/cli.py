@@ -7,7 +7,9 @@ from stats_menu import stats_menu
 
 
 if __name__ == '__main__':
-    print(
+    x=''
+    while True:
+        print(
         '''
    ______  __ __  __  __                                          
   / ____/_/ // /_/ / / /___ __________ ___  ____  ____  __  __    
@@ -17,16 +19,16 @@ if __name__ == '__main__':
                                                      /____/  
 '''
     )
-    print("Disclaimer: input exit to exit the program at any time")
-    print('Are you a musician or a band?')
-    x=''
-    while not (x == 'm' or x == 'b'):   
-        x = input('Press [m] for musician, [b] for band, or [g] for general stats: ')
+        print("Welcome to C#Harmony! We provide a platform for musicians and bands to find each other and collaborate!\n\n\n\n")
+        print('Are you a musician or a band?\n')   
+        x = input('Press [m] for musician, [b] for band, [g] for general stats, or [exit] to quit: ')
         if x == 'm':
             musician_menu()
         elif x == 'b':
             band_menu()
         elif x =="g":
             stats_menu()
+        elif x == "exit":
+            exit_program()
         else:
             print('Not a valid response!')

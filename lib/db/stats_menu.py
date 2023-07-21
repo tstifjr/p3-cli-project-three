@@ -16,6 +16,9 @@ def stats_menu():
         """)
 
         print(f"""
+
+
+
 Most Popular Genre
 ```````````````````
 {Band.get_most_popular_genre()}
@@ -24,7 +27,22 @@ Most Popular Genre
 Instrument Most Needed by Bands
 ```````````````````````````````
 {Band.get_most_popular_instrument()}
+
+
+Most Auditions
+``````````````
+{Band.get_band_with_most_auditions()}
+
+
+Percent of Bands Looking
+````````````````````````
+{Band.percent_looking_band()}
+        
+
+        
         """)
+
+        input("Please [enter] to continue:")
 
 #######################################
 
@@ -42,19 +60,26 @@ Instrument Most Needed by Bands
         """)
 
         print(f"""
-Most Popular Genre 
-```````````````````
-{Musician.get_most_popular_genre()}
-
+Most Popular Genre                              
+```````````````````                             
+{Musician.get_most_popular_genre()}                                       
 
 Most Popular Instrument
 ````````````````````````
 {Musician.get_most_popular_instrument()}
 
-
 Total Musician by Skills
 `````````````````````````
 {Musician.skilled_list()}
+
+Most Auditions
+``````````````
+{Musician.get_musician_with_most_auditions()}
+
+Percent of Bands Looking
+````````````````````````
+{Musician.percent_looking_musician()}
+
         """)
 
         input("Please [enter] to continue:")
@@ -68,6 +93,9 @@ Total Musician by Skills
 
     while True:
         print("""
+
+
+
  ___  ____   __   ____  ___    __  __  ____  _  _  __  __ 
 / __)(_  _) /__\ (_  _)/ __)  (  \/  )( ___)( \( )(  )(  )
 \__ \  )(  /(__)\  )(  \__ \   )    (  )__)  )  (  )(__)( 
@@ -77,16 +105,21 @@ Total Musician by Skills
         Please select an option:
 
             1. Band Stats
-            2. Musician Stats
+            2. Musician Stats              
 
 
-    
+
+Type [exit] to go back to Main Menu
+
         """)
         selection = input("Enter a number: ")
         if selection == "1":
             band_stats()
         elif selection == "2":
             musician_stats()
+        elif selection == "exit":
+            print("\n\n\n\n\n\n")
+            break
         else:
             print("Invalid repsonse. Please enter either 1 or 2.")
 
